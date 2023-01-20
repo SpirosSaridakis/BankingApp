@@ -13,4 +13,24 @@ public class UserController : Controller
 	public UserController()
 	{
 	}
+	[HttpPost]
+	public IActionResult deposit(){
+
+		return Ok();
+	}
+
+	[HttpPost]
+	public IActionResult withdraw(){
+	
+		return Ok();
+	}
+
+	[HttpGet]
+	public IActionResult details(){
+
+		return Ok();
+	}
+
+
+
 }
