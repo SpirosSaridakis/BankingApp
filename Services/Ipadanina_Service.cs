@@ -1,7 +1,9 @@
 ﻿using System;
+using Padanian_Bank.Models;
+
 namespace Ipadanian_Service { 
 	
-	public interface Ipadanian_Service
+	public interface _Ipadanian_Service
 	{
 		bool deposit(int account_id,int ammount);
 

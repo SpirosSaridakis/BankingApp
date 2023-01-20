@@ -34,7 +34,7 @@ namespace Padanian_Bank.Controllers
             }
 
             var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.UserId == id);
             if (account == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace Padanian_Bank.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,desc,balance,currency")] Account account)
         {
-            if (id != account.Id)
+            if (id != account.UserId)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace Padanian_Bank.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountExists(account.Id))
+                    if (!AccountExists(account.UserId))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace Padanian_Bank.Controllers
             }
 
             var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.UserId == id);
             if (account == null)
             {
                 return NotFound();
@@ -147,7 +147,7 @@ namespace Padanian_Bank.Controllers
 
         private bool AccountExists(int id)
         {
-            return _context.Account.Any(e => e.Id == id);
+            return _context.Account.Any(e => e.UserId == id);
         }
     }
 }
