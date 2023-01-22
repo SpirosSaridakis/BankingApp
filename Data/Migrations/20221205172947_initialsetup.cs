@@ -14,7 +14,7 @@ namespace Padanian_Bank.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     desc = table.Column<string>(nullable: true),
                     balance = table.Column<double>(nullable: false),
-                    currency = table.Column<string>(nullable: true)
+                    currency = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {

@@ -14,19 +14,19 @@ public class UserController : Controller
 	{
 	}
 	[HttpPost]
-	public IActionResult deposit(){
+	public IActionResult Deposit(){
 
 		return Ok();
 	}
 
 	[HttpPost]
-	public IActionResult withdraw(){
+	public IActionResult Withdraw(){
 	
 		return Ok();
 	}
 
 	[HttpGet]
-	public IActionResult details(){
+	public IActionResult Details(){
 
 		return Ok();
 	}

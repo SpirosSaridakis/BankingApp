@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,30 +21,32 @@ namespace Padanian_Bank.Controllers
         }
 
         // GET: Accounts
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Account.ToListAsync());
+            Task<List<Account>> task = _context.Account.ToListAsync();
+            return base.View(await task);
         }
 
         // GET: Accounts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [Authorize]
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (account == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            return View(account);
+            return View(id);
         }
 
         // GET: Accounts/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +55,7 @@ namespace Padanian_Bank.Controllers
         // POST: Accounts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,desc,balance,currency")] Account account)
@@ -66,6 +70,7 @@ namespace Padanian_Bank.Controllers
         }
 
         // GET: Accounts/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,14 +89,12 @@ namespace Padanian_Bank.Controllers
         // POST: Accounts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,desc,balance,currency")] Account account)
         {
-            if (id != account.UserId)
-            {
-                return NotFound();
-            }
+     
 
             if (ModelState.IsValid)
             {
@@ -102,7 +105,7 @@ namespace Padanian_Bank.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountExists(account.UserId))
+                    if (!AccountExists(account.Id))
                     {
                         return NotFound();
                     }
@@ -117,6 +120,7 @@ namespace Padanian_Bank.Controllers
         }
 
         // GET: Accounts/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,7 +129,7 @@ namespace Padanian_Bank.Controllers
             }
 
             var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.UserId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
                 return NotFound();
@@ -135,6 +139,7 @@ namespace Padanian_Bank.Controllers
         }
 
         // POST: Accounts/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -147,7 +152,7 @@ namespace Padanian_Bank.Controllers
 
         private bool AccountExists(int id)
         {
-            return _context.Account.Any(e => e.UserId == id);
+            return _context.Account.Any(e => e.Id == id);
         }
     }
 }
