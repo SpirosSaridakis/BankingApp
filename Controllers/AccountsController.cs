@@ -19,30 +19,26 @@ namespace Padanian_Bank.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Accounts
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            Task<List<Account>> task = _context.Account.ToListAsync();
-            return base.View(await task);
+            return View(await _context.Account.ToListAsync());
         }
 
         // GET: Accounts/Details/5
         [Authorize]
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            var account = await _context.Account.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (account == null)
             {
                 return NotFound();
             }
 
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            return View(id);
+            return View(account);
         }
 
         // GET: Accounts/Create
@@ -94,7 +90,10 @@ namespace Padanian_Bank.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,desc,balance,currency")] Account account)
         {
-     
+            if (id != account.Id)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
