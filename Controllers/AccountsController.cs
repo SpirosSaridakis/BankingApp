@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,23 +19,20 @@ namespace Padanian_Bank.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Accounts
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Account.ToListAsync());
         }
 
         // GET: Accounts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [Authorize]
+        public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var account = await _context.Account.FirstOrDefaultAsync(m => m.AccountId == id);
 
-            var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.UserId == id);
             if (account == null)
             {
                 return NotFound();
@@ -44,6 +42,7 @@ namespace Padanian_Bank.Controllers
         }
 
         // GET: Accounts/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +51,7 @@ namespace Padanian_Bank.Controllers
         // POST: Accounts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,desc,balance,currency")] Account account)
@@ -66,7 +66,8 @@ namespace Padanian_Bank.Controllers
         }
 
         // GET: Accounts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [Authorize]
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
@@ -84,11 +85,12 @@ namespace Padanian_Bank.Controllers
         // POST: Accounts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,desc,balance,currency")] Account account)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,desc,balance,currency")] Account account)
         {
-            if (id != account.UserId)
+            if (id != account.AccountId)
             {
                 return NotFound();
             }
@@ -102,7 +104,7 @@ namespace Padanian_Bank.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountExists(account.UserId))
+                    if (!AccountExists(account.AccountId))
                     {
                         return NotFound();
                     }
@@ -117,7 +119,8 @@ namespace Padanian_Bank.Controllers
         }
 
         // GET: Accounts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [Authorize]
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -125,7 +128,7 @@ namespace Padanian_Bank.Controllers
             }
 
             var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.UserId == id);
+                .FirstOrDefaultAsync(m => m.AccountId == id);
             if (account == null)
             {
                 return NotFound();
@@ -135,6 +138,7 @@ namespace Padanian_Bank.Controllers
         }
 
         // POST: Accounts/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -145,9 +149,9 @@ namespace Padanian_Bank.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AccountExists(int id)
+        private bool AccountExists(Guid id)
         {
-            return _context.Account.Any(e => e.UserId == id);
+            return _context.Account.Any(e => e.AccountId == id);
         }
     }
 }

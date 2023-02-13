@@ -1,25 +1,25 @@
 ﻿@model IEnumerable<Padanian_Bank.Models.Account>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Accounts";
 }
 
-<h1>Index</h1>
+<h1>Accounts</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Account</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.desc)
+                Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.balance)
+                Balance
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.currency)
+                Currency
             </th>
             <th></th>
         </tr>
@@ -28,18 +28,20 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.desc)
+                @Html.DisplayFor(modelItem => item.Desc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.balance)
+                @Html.DisplayFor(modelItem => item.Balance)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.currency)
+                @Html.DisplayFor(modelItem => item.Currency)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.AccountId">Details</a>|
+                <a asp-action="Deposit" asp-route-id="@item.AccountId">Deposit</a>|
+                <a asp-action="Withdraw" asp-route-id="@item.AccountId">Withdraw</a>|
+                <a asp-action="Edit" asp-route-id="@item.AccountId">Edit Description</a>|
+                <a asp-action="Delete" asp-route-id="@item.AccountId">Delete Account</a>
             </td>
         </tr>
 }
