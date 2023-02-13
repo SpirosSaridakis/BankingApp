@@ -11,7 +11,7 @@ namespace Padanian_Bank.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20221205172947_initialsetup")]
-    partial class initialsetup
+    partial class Initialsetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

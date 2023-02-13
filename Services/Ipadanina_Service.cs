@@ -1,13 +1,16 @@
 ﻿using System;
-namespace Ipadanian_Service { 
+using Padanian_Bank.Models;
+
+namespace Padanian_Bank.Services.BankService{ 
 	
 	public interface Ipadanian_Service
 	{
-		bool deposit(int account_id,int ammount);
+		bool create(Account account);
+		bool deposit(int account_id,float ammount);
 
-		bool withdraw(int account_id, int ammount);
+		bool withdraw(int account_id, float ammount);
 
-		Account details(int account_id);
+		Account details(Guid account_id);
 
 	}
 
