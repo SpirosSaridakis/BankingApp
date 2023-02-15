@@ -16,24 +16,22 @@ public class UserController : Controller
 		_IpadanianService = _PadanianService;
 	}
 	[HttpPost("path")]
-	public IActionResult deposit(int id, float ammount){
+	public IActionResult deposit(Guid id, float ammount){
 		bool result = _IpadanianService.deposit(id,ammount);
 
-		return Ok();
+		return View(result);
 	}
 
 	[HttpPost("path")]
-	public IActionResult withdraw(int id, float ammount){
+	public IActionResult withdraw(Guid id, float ammount){
 		bool result = _IpadanianService.withdraw(id,ammount);
-		return Ok();
+		return View(result);
 	}
 
 	[HttpGet("path")]
 	public IActionResult details(Guid id){
-		Account acc = _IpadanianService.details(id);
-		return Ok();
+		String acc = _IpadanianService.details(id);
+		return View(acc);
 	}
-
-
 
 }

@@ -11,32 +11,55 @@ public class Padanian_Service : Ipadanian_Service
 
 	}
     public bool create(Account account){
-        if((details(account.AccountId))!=null){
-            _accounts.Add(account.AccountId,account);
-            return true;
-        }else{
+        if(checkIfExists(account.AccountId)==null){
             return false;
         }
+        _accounts.Add(account.AccountId,account);
+        return true;
 
     }
 
-    public bool deposit(int account_id, float ammount)
+    public bool deposit(Guid account_id, float ammount)
     {
-        throw new NotImplementedException();
+        if(checkIfExists(account_id)==null){
+            return false;
+        }
+        Account acc = _accounts[account_id];
+        acc.Balance+=ammount;
+        return true;
     }
 
-    public Account details(Guid account_id)
+    public string details(Guid account_id)
     {
          if(_accounts.TryGetValue(account_id,out var acc)){
+            acc = _accounts[account_id];
+            string details = "Description: "+acc.Desc+"\nBalance: "+acc.Balance+"\nCurrency: "+acc.Currency;
+            return details;
+        }else{
+            return "Account does not exist";
+        }
+    }
+
+    public bool withdraw(Guid account_id, float ammount)
+    {
+        
+        if(checkIfExists(account_id)==null){
+            return false;
+        }else if(_accounts[account_id].Balance<ammount){
+            return false;
+        }
+        _accounts[account_id].Balance-=ammount;
+        return true;
+
+    }
+
+    public Account checkIfExists(Guid account_id){
+
+        if(_accounts.TryGetValue(account_id,out var acc)){
             return acc;
         }else{
             return null;
         }
-    }
-
-    public bool withdraw(int account_id, float ammount)
-    {
-        throw new NotImplementedException();
     }
 
     
