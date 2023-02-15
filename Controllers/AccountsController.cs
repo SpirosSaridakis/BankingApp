@@ -29,9 +29,9 @@ namespace Padanian_Bank.Controllers
 
         // GET: Accounts/Details/5
         [Authorize]
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(int? id)
         {
-            var account = await _context.Account.FirstOrDefaultAsync(m => m.AccountId == id);
+            var account = await _context.Account.FirstOrDefaultAsync(m => m.Id == id);
 
             if (account == null)
             {
@@ -65,9 +65,9 @@ namespace Padanian_Bank.Controllers
             return View(account);
         }
 
-        // GET: Accounts/Edit/5
+        // GET: Accounts/Deposit/5
         [Authorize]
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Deposit(int? id)
         {
             if (id == null)
             {
@@ -82,15 +82,15 @@ namespace Padanian_Bank.Controllers
             return View(account);
         }
 
-        // POST: Accounts/Edit/5
+        // POST: Accounts/Deposit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,desc,balance,currency")] Account account)
+        public async Task<IActionResult> Deposit(int id, [Bind("Id,desc,balance,currency")] Account account)
         {
-            if (id != account.AccountId)
+            if (id != account.Id)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace Padanian_Bank.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountExists(account.AccountId))
+                    if (!AccountExists(account.Id))
                     {
                         return NotFound();
                     }
@@ -118,9 +118,63 @@ namespace Padanian_Bank.Controllers
             return View(account);
         }
 
+        // GET: Accounts/Withdraw/5
+        [Authorize]
+        public async Task<IActionResult> Withdraw(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var account = await _context.Account.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return View(account);
+        }
+
+        // POST: Accounts/Withdraw/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Withdraw(int id, [Bind("Id,desc,balance,currency")] Account account)
+        {
+            if (id != account.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(account);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AccountExists(account.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(account);
+        }
+
+
         // GET: Accounts/Delete/5
         [Authorize]
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -128,7 +182,7 @@ namespace Padanian_Bank.Controllers
             }
 
             var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.AccountId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
                 return NotFound();
@@ -149,9 +203,9 @@ namespace Padanian_Bank.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AccountExists(Guid id)
+        private bool AccountExists(int id)
         {
-            return _context.Account.Any(e => e.AccountId == id);
+            return _context.Account.Any(e => e.Id == id);
         }
     }
 }
