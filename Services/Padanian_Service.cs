@@ -11,8 +11,13 @@ public class Padanian_Service : Ipadanian_Service
 
 	}
     public bool create(Account account){
-        if(checkIfExists(account.AccountId)==null){
-            return false;
+        bool flag = true;
+        while(flag){
+            if(checkIfExists(account.AccountId)==null){
+                account.AccountId=Guid.NewGuid();
+            }else{
+                flag=false;
+            }
         }
         _accounts.Add(account.AccountId,account);
         return true;
@@ -49,6 +54,7 @@ public class Padanian_Service : Ipadanian_Service
             return false;
         }
         _accounts[account_id].Balance-=ammount;
+        //log transaction
         return true;
 
     }

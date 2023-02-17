@@ -15,6 +15,14 @@ public class UserController : Controller
 	{
 		_IpadanianService = _PadanianService;
 	}
+
+	[HttpPost("Path")]
+	public IActionResult create(string Adesc, double Abalance, string Acurrency, int AuserId){
+		Account newAcc = new Account(Adesc,Abalance,Acurrency,AuserId);
+		bool result = _IpadanianService.create(newAcc);
+		return View(result);
+	}
+
 	[HttpPost("path")]
 	public IActionResult deposit(Guid id, float ammount){
 		bool result = _IpadanianService.deposit(id,ammount);
