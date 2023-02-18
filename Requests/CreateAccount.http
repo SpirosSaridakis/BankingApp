@@ -1,0 +1,9 @@
+POST path
+Content-Type: application/json
+
+{
+    "desc": "",
+    "currency": "",
+    "balance": "",
+    "userid": ""
+}
