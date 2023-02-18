@@ -13,6 +13,9 @@ namespace Padanian_Bank.Models
         public string Currency { get; set; }
         public int UserId;
         
+        public Account(){
+            
+        }
         
         public Account(/*string Adesc, double Abalance, string Acurrency, int AuserId*/)
             {/*
