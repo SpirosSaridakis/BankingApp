@@ -14,13 +14,22 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Desc" class="control-label"></label>
-                <input asp-for="Desc" class="form-control" />
                 <span asp-validation-for="Desc" class="text-danger"></span>
+                <select name="Desc" id="Desc">
+                    <option value="Salary">Salary</option>
+                    <option value="Investor">Investor</option>
+                    <option value="Savings">Savings</option>
+                    <option value="Business">Business</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Currency" class="control-label"></label>
-                <input asp-for="Currency" class="form-control" />
                 <span asp-validation-for="Currency" class="text-danger"></span>
+                <select name="Currency" id="Currency">
+                    <option value="Euro">Euro</option>
+                    <option value="Dollar">Dollar</option>
+                    <option value="British_Pound">British Pound</option>
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
