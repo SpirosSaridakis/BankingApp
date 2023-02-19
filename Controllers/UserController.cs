@@ -17,7 +17,7 @@ public class UserController : Controller
 	}
 
 	[HttpPost("Path")]
-	public IActionResult create(string Adesc, double Abalance, string Acurrency, int AuserId){
+	public IActionResult create(Desc Adesc, double Abalance, Currency Acurrency, int AuserId){
 		Account newAcc = new Account(Adesc,Abalance,Acurrency,AuserId);
 		bool result = _IpadanianService.create(newAcc);
 		return View(result);
