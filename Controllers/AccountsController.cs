@@ -64,63 +64,137 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Deposit(Guid id, float Funds)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var AccountToUpdate = await _context.Account.FirstOrDefaultAsync(s => s.AccountId == id);
-            if (await TryUpdateModelAsync<Account>(
-                AccountToUpdate,
-                "", s => s.AccountId, s => s.Balance, s => s.Currency, s => s.Desc))
-            {
-                try
-                {
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (DbUpdateException /* ex */)
-                {
-                    //Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Unable to save changes. " +
-                        "Try again, and if the problem persists, " +
-                        "see your system administrator.");
-                }
-            }
-            return View(AccountToUpdate);
-        }
-
-        // GET: Accounts/Withdraw/5
-        [Authorize]
-        public IActionResult Withdraw()
-        {
-            return View();
-        }
-
-        // POST: Accounts/WithdrawResults/5
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> WithdrawResults(Guid id, float Funds, Account account)
+        public async Task<IActionResult> Deposit(Guid id, float Funds, [Bind("AccountId,Desc,Balance,Currency")] Account account)
         {
             if (id != account.AccountId)
             {
                 return NotFound();
             }
 
+                account.Balance = account.Balance + Funds;
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if((account.Balance - Funds) > 0)
+                    _context.Update(account);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AccountExists(account.AccountId))
                     {
-                        account.Balance = account.Balance - Funds;
-                        _context.Update(account);
-                        await _context.SaveChangesAsync();
+                        return NotFound();
                     }
-                    
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(account);
+        }
+
+        // GET: Accounts/Withdraw/5
+        [Authorize]
+        public async Task<IActionResult> Withdraw(Guid id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var account = await _context.Account.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return View(account);
+        }
+
+        // POST: Accounts/Withdraw/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Withdraw(Guid id, float Funds, [Bind("AccountId,Desc,Balance,Currency")] Account account)
+        {
+            if (id != account.AccountId)
+            {
+                return NotFound();
+            }
+
+            if ((account.Balance - Funds) >= 0)
+            {
+                account.Balance = account.Balance - Funds;
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(account);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AccountExists(account.AccountId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(account);
+        }
+
+        // GET: Accounts/Transfer/5
+        [Authorize]
+        public async Task<IActionResult> Transfer(Guid id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var account = await _context.Account.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return View(account);
+        }
+
+        // POST: Accounts/Transfer/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Transfer(Guid id, Guid AccId, float Funds, [Bind("AccountId,Desc,Balance,Currency")] Account account)
+        {
+            if (id != account.AccountId)
+            {
+                return NotFound();
+            }
+
+            if ((account.Balance - Funds) >= 0)
+            {
+                account.Balance = account.Balance - Funds;
+
+                Account acc = new Account();
+                acc.AccountId = AccId;
+                acc.Balance = acc.Balance + Funds;
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(account);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
