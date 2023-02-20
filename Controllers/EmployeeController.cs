@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using Padanian_Bank.Services.BankService;
 
 public class EmployeeController : UserController
@@ -7,3 +8,4 @@ public class EmployeeController : UserController
 	{
 	}
 }
+*/

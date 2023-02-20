@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Padanian_Bank.Data;
+using Padanian_Bank.Services.BankService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +33,10 @@ namespace Padanian_Bank
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddSingleton<Ipadanian_Service, Padanian_Service>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
