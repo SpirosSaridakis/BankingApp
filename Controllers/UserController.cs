@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,7 +41,7 @@ public class UserController : Controller
 
 	[HttpGet("/Details/{AccountId}")]
 	public IActionResult details(Guid id){
-		String acc = _IpadanianService.details(id);
+		Account acc = _IpadanianService.details(id);
 		return View(acc);
 	}
 
@@ -51,4 +51,3 @@ public class UserController : Controller
 	}
 
 }
-*/

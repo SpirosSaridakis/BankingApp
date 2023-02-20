@@ -1,4 +1,4 @@
-﻿
+﻿/*
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +17,10 @@ namespace Padanian_Bank.Controllers
 {
     public class AccountsController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly Ipadanian_Service _IpadanianService;
 
-        public AccountsController(/*ApplicationDbContext context*/Ipadanian_Service _PadanianService)
+        public AccountsController(Ipadanian_Service _PadanianService)
         {
-            //_context = context;
             _IpadanianService = _PadanianService;
         }
         
@@ -69,16 +67,14 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public /*async Task<IActionResult>*/IActionResult Deposit(Guid id, float Funds)
+        public /*async Task<IActionResult>IActionResult Deposit(Guid id, float Funds)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            bool result = _IpadanianService.deposit(id,Funds);
+            
+            
+            var result = _IpadanianService.deposit(id,Funds);
             return View(result);
-
-            /*
+            
+            
             var AccountToUpdate = await _context.Account.FirstOrDefaultAsync(s => s.AccountId == id);
             if (await TryUpdateModelAsync<Account>(
                 AccountToUpdate,
@@ -89,7 +85,7 @@ namespace Padanian_Bank.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateException  /*ex*//* )
+                catch (DbUpdateException  ex )
                 {
                     //Log the error (uncomment ex variable name and write a log.)
                     ModelState.AddModelError("", "Unable to save changes. " +
@@ -99,7 +95,7 @@ namespace Padanian_Bank.Controllers
                 
             }
             return View(AccountToUpdate);
-            */
+            
         }
 
         // GET: Accounts/Withdraw/5
@@ -113,7 +109,7 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public /*async Task<IActionResult>*/ IActionResult Withdraw/*Results*/(Guid id, float Funds/*, Account account*/)
+        public /*async Task<IActionResult> IActionResult Withdraw/*Result/(Guid id, float Funds/*, Account account)
         {
             bool result = _IpadanianService.withdraw(id,Funds);
 		    return View(result);
@@ -148,12 +144,12 @@ namespace Padanian_Bank.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(account);*/
+            return View(account);
         }
 
         // GET: Accounts/Details/5
         [Authorize]
-        public /*async Task<IActionResult>*/IActionResult Details(/*Guid? id*/Guid id)
+        public /*async Task<IActionResult>*//*IActionResult Details(/*Guid? id*//*Guid id)
         {
             String acc = _IpadanianService.details(id);
 		    return View(acc);
@@ -167,7 +163,7 @@ namespace Padanian_Bank.Controllers
             }
 
             return View(account);
-            */
+            
         }
 
         
@@ -175,7 +171,7 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            return Ok();/*View()*/;
+            return Ok();/*View();
         }
         
         // POST: Accounts/Create
@@ -184,7 +180,7 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost("/Accounts/Create")]
         [ValidateAntiForgeryToken]
-        public /*async Task<IActionResult>*/ IActionResult Create(/*[Bind("AccountId,Desc,Balance,Currency")] Account account*/ CreateAccountRequest crs)
+        public /*async Task<IActionResult> IActionResult Create(/*[Bind("AccountId,Desc,Balance,Currency")] Account account CreateAccountRequest crs)
         {
             Account newAcc = new Account(crs.desc,crs.balance,crs.currency,crs.userid);
 		    bool result = _IpadanianService.create(newAcc);
@@ -199,7 +195,7 @@ namespace Padanian_Bank.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(account);
-            */
+            
             
         }
 
@@ -298,3 +294,4 @@ namespace Padanian_Bank.Controllers
 	    }
     }
 }
+*/
