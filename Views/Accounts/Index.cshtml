@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                Description
+                Account ID
             </th>
             <th>
-                Balance
+                Description
             </th>
             <th>
                 Currency
@@ -28,20 +28,21 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Desc)
+                @Html.DisplayFor(modelItem => item.AccountId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Balance)
+                @Html.DisplayFor(modelItem => item.Desc)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Currency)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.AccountId">Details</a>|
+                <a asp-action="Details" asp-route-id="@item.AccountId">See Balace</a>|
+                <a asp-action="Transfer" asp-route-id="@item.AccountId">Transfer Funds</a>|
                 <a asp-action="Deposit" asp-route-id="@item.AccountId">Deposit</a>|
                 <a asp-action="Withdraw" asp-route-id="@item.AccountId">Withdraw</a>|
                 <a asp-action="Edit" asp-route-id="@item.AccountId">Edit Description</a>|
-                <a asp-action="Delete" asp-route-id="@item.AccountId">Delete Account</a>
+                <a asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
             </td>
         </tr>
 }

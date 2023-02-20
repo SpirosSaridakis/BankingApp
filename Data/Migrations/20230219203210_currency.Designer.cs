@@ -10,8 +10,8 @@ using Padanian_Bank.Data;
 namespace Padanian_Bank.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221205172947_initialsetup")]
-    partial class Initialsetup
+    [Migration("20230219203210_currency")]
+    partial class currency
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -223,21 +223,20 @@ namespace Padanian_Bank.Data.Migrations
 
             modelBuilder.Entity("Padanian_Bank.Models.Account", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("AccountId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("balance")
+                    b.Property<double>("Balance")
                         .HasColumnType("float");
 
-                    b.Property<string>("currency")
+                    b.Property<int?>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Desc")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("desc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
+                    b.HasKey("AccountId");
 
                     b.ToTable("Account");
                 });

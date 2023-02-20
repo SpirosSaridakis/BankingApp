@@ -1,8 +1,21 @@
-﻿@model Padanian_Bank.Models.Account
+﻿<h1>Withdraw</h1>
 
-@{
-    ViewData["Title"] = "Withdraw";
-}
+<h4>Account</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="WithdrawResults">
+            <div class="form-group">
+                <label for="Funds" class="control-label"></label>
+                <input name="Funds" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Withdraw" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
 
-<h1>Withdraw</h1>
-
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

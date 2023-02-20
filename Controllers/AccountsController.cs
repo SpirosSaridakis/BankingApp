@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Padanian_Bank.Data;
 using Padanian_Bank.Models;
+using Padanian_Bank.Services.BankService;
 
 namespace Padanian_Bank.Controllers
 {
@@ -26,6 +27,116 @@ namespace Padanian_Bank.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Account.ToListAsync());
+        }
+
+        // GET: Accounts/ShowSearchForm
+        [Authorize]
+        public IActionResult ShowSearchForm()
+        {
+            return View();
+        }
+
+        // POST: Accounts/ShowSearchResults
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ShowSearchResults(Guid SearchPhrase)
+        {
+            return View("Index", await _context.Account.Where( j => j.AccountId.Equals(SearchPhrase)).ToListAsync());
+        }
+
+        // GET: Accounts/Deposit/5
+        [Authorize]
+        public async Task<IActionResult> Deposit(Guid id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var account = await _context.Account.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return View(account);
+        }
+
+        // POST: Accounts/Deposit/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Deposit(Guid id, float Funds)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var AccountToUpdate = await _context.Account.FirstOrDefaultAsync(s => s.AccountId == id);
+            if (await TryUpdateModelAsync<Account>(
+                AccountToUpdate,
+                "", s => s.AccountId, s => s.Balance, s => s.Currency, s => s.Desc))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+            }
+            return View(AccountToUpdate);
+        }
+
+        // GET: Accounts/Withdraw/5
+        [Authorize]
+        public IActionResult Withdraw()
+        {
+            return View();
+        }
+
+        // POST: Accounts/WithdrawResults/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> WithdrawResults(Guid id, float Funds, Account account)
+        {
+            if (id != account.AccountId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if((account.Balance - Funds) > 0)
+                    {
+                        account.Balance = account.Balance - Funds;
+                        _context.Update(account);
+                        await _context.SaveChangesAsync();
+                    }
+                    
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AccountExists(account.AccountId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(account);
         }
 
         // GET: Accounts/Details/5
@@ -55,7 +166,7 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,desc,balance,currency")] Account account)
+        public async Task<IActionResult> Create([Bind("AccountId,Desc,Balance,Currency")] Account account)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +200,7 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,desc,balance,currency")] Account account)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AccountId,Desc,Balance,Currency")] Account account)
         {
             if (id != account.AccountId)
             {
@@ -142,7 +253,7 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var account = await _context.Account.FindAsync(id);
             _context.Account.Remove(account);
