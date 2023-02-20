@@ -1,8 +1,9 @@
-﻿/*
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Johns_App.Records;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,15 +12,18 @@ using Padanian_Bank.Data;
 using Padanian_Bank.Models;
 using Padanian_Bank.Services.BankService;
 
+
 namespace Padanian_Bank.Controllers
 {
     public class AccountsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly Ipadanian_Service _IpadanianService;
 
-        public AccountsController(ApplicationDbContext context)
+        public AccountsController(/*ApplicationDbContext context*/Ipadanian_Service _PadanianService)
         {
-            _context = context;
+            //_context = context;
+            _IpadanianService = _PadanianService;
         }
         
         // GET: Accounts
@@ -65,13 +69,16 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Deposit(Guid id, float Funds)
+        public /*async Task<IActionResult>*/IActionResult Deposit(Guid id, float Funds)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            bool result = _IpadanianService.deposit(id,Funds);
+            return View(result);
 
+            /*
             var AccountToUpdate = await _context.Account.FirstOrDefaultAsync(s => s.AccountId == id);
             if (await TryUpdateModelAsync<Account>(
                 AccountToUpdate,
@@ -82,15 +89,17 @@ namespace Padanian_Bank.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateException /* ex */)
+                catch (DbUpdateException  /*ex*//* )
                 {
                     //Log the error (uncomment ex variable name and write a log.)
                     ModelState.AddModelError("", "Unable to save changes. " +
                         "Try again, and if the problem persists, " +
                         "see your system administrator.");
                 }
+                
             }
             return View(AccountToUpdate);
+            */
         }
 
         // GET: Accounts/Withdraw/5
@@ -104,8 +113,11 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> WithdrawResults(Guid id, float Funds, Account account)
+        public /*async Task<IActionResult>*/ IActionResult Withdraw/*Results*/(Guid id, float Funds/*, Account account*/)
         {
+            bool result = _IpadanianService.withdraw(id,Funds);
+		    return View(result);
+            /*
             if (id != account.AccountId)
             {
                 return NotFound();
@@ -136,13 +148,17 @@ namespace Padanian_Bank.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(account);
+            return View(account);*/
         }
 
         // GET: Accounts/Details/5
         [Authorize]
-        public async Task<IActionResult> Details(Guid? id)
+        public /*async Task<IActionResult>*/IActionResult Details(/*Guid? id*/Guid id)
         {
+            String acc = _IpadanianService.details(id);
+		    return View(acc);
+            
+            /*
             var account = await _context.Account.FirstOrDefaultAsync(m => m.AccountId == id);
 
             if (account == null)
@@ -151,23 +167,31 @@ namespace Padanian_Bank.Controllers
             }
 
             return View(account);
+            */
         }
 
+        
         // GET: Accounts/Create
         [Authorize]
         public IActionResult Create()
         {
-            return View();
+            return Ok();/*View()*/;
         }
-
+        
         // POST: Accounts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
-        [HttpPost]
+        [HttpPost("/Accounts/Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AccountId,Desc,Balance,Currency")] Account account)
+        public /*async Task<IActionResult>*/ IActionResult Create(/*[Bind("AccountId,Desc,Balance,Currency")] Account account*/ CreateAccountRequest crs)
         {
+            Account newAcc = new Account(crs.desc,crs.balance,crs.currency,crs.userid);
+		    bool result = _IpadanianService.create(newAcc);
+            return View(result);
+             
+            //CreatedAtAction(nameof(Create),new{id = newAcc.AccountId},value:MapAccountResponse(newAcc));
+            /*
             if (ModelState.IsValid)
             {
                 _context.Add(account);
@@ -175,6 +199,8 @@ namespace Padanian_Bank.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(account);
+            */
+            
         }
 
         // GET: Accounts/Edit/5
@@ -265,6 +291,10 @@ namespace Padanian_Bank.Controllers
         {
             return _context.Account.Any(e => e.AccountId == id);
         }
+
+        public CreateResponseStruct MapAccountResponse(Account acc){
+		    CreateResponseStruct crs = new CreateResponseStruct(acc);
+		    return crs;
+	    }
     }
 }
-*/
