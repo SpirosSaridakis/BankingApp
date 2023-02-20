@@ -1,18 +1,32 @@
 ﻿@model Padanian_Bank.Models.Account
 
 @{
+<<<<<<< Updated upstream
     ViewData["Title"] = "Edit";
 }
 
 <h1>Edit</h1>
+=======
+    ViewData["Title"] = "Withdraw Funds";
+}
+
+<h1>Withdraw</h1>
+>>>>>>> Stashed changes
 
 <h4>Account</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
+<<<<<<< Updated upstream
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+=======
+        <form asp-action="Withdraw">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AccountId" />
+            <input type="hidden" asp-for="Desc" />
+>>>>>>> Stashed changes
             <input type="hidden" asp-for="Balance" />
             <input type="hidden" asp-for="Currency" />
             <div class="form-group">

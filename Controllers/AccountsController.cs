@@ -27,6 +27,134 @@ namespace Padanian_Bank.Controllers
             return View(await _context.Account.ToListAsync());
         }
 
+<<<<<<< Updated upstream
+=======
+        // GET: Accounts/ShowSearchForm
+        [Authorize]
+        public IActionResult ShowSearchForm()
+        {
+            return View();
+        }
+
+        // POST: Accounts/ShowSearchResults
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ShowSearchResults(Guid SearchPhrase)
+        {
+            return View("Index", await _context.Account.Where( j => j.AccountId.Equals(SearchPhrase)).ToListAsync());
+        }
+
+        // GET: Accounts/Deposit/5
+        [Authorize]
+        public async Task<IActionResult> Deposit(Guid id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var account = await _context.Account.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return View(account);
+        }
+
+        // POST: Accounts/Deposit/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Deposit(Guid id, float Funds, [Bind("AccountId,Desc,Balance,Currency")] Account account)
+        {
+            if (id != account.AccountId)
+            {
+                return NotFound();
+            }
+            account.Balance = account.Balance + Funds;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(account);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AccountExists(account.AccountId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(account);
+        }
+
+        // GET: Accounts/Withdraw/5
+        [Authorize]
+        public async Task<IActionResult> Withdraw(Guid id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var account = await _context.Account.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return View(account);
+        }
+
+        // POST: Accounts/Withdraw/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Withdraw(Guid id, float Funds, [Bind("AccountId,Desc,Balance,Currency")] Account account)
+        {
+            if (id != account.AccountId)
+            {
+                return NotFound();
+            }
+
+            if ((account.Balance - Funds) > 0)
+            {
+                account.Balance = account.Balance - Funds;
+
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    
+                    _context.Update(account);
+                    await _context.SaveChangesAsync();
+
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AccountExists(account.AccountId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(account);
+        }
+
+>>>>>>> Stashed changes
         // GET: Accounts/Details/5
         [Authorize]
         public async Task<IActionResult> Details(int? id)
