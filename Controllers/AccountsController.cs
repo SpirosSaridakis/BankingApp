@@ -20,9 +20,9 @@ namespace Padanian_Bank.Controllers
         private readonly ApplicationDbContext _context;
         private readonly Ipadanian_Service _IpadanianService;
 
-        public AccountsController(/*ApplicationDbContext context*/Ipadanian_Service _PadanianService)
+        public AccountsController(ApplicationDbContext context, Ipadanian_Service _PadanianService)
         {
-            //_context = context;
+            _context = context;
             _IpadanianService = _PadanianService;
         }
         
