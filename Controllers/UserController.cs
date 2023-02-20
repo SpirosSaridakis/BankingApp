@@ -17,27 +17,27 @@ public class UserController : Controller
 	}
 
 	[HttpPost("Path")]
-	public IActionResult create(Desc Adesc, double Abalance, Currency Acurrency, int AuserId){
+	public IActionResult create(Desc Adesc, double Abalance, Currency Acurrency, String? AuserId){
 		Account newAcc = new Account(Adesc,Abalance,Acurrency,AuserId);
 		bool result = _IpadanianService.create(newAcc);
 		return View(result);
 	}
 
 	[HttpPost("path")]
-	public IActionResult deposit(Guid id, float ammount){
+	public IActionResult deposit(int id, float ammount){
 		bool result = _IpadanianService.deposit(id,ammount);
 
 		return View(result);
 	}
 
 	[HttpPost("path")]
-	public IActionResult withdraw(Guid id, float ammount){
+	public IActionResult withdraw(int id, float ammount){
 		bool result = _IpadanianService.withdraw(id,ammount);
 		return View(result);
 	}
 
 	[HttpGet("path")]
-	public IActionResult details(Guid id){
+	public IActionResult details(int id){
 		String acc = _IpadanianService.details(id);
 		return View(acc);
 	}

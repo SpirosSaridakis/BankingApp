@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Padanian_Service : Ipadanian_Service
 {
-    private static readonly Dictionary<Guid,Account> _accounts = new Dictionary<Guid, Account>();
+    private static readonly Dictionary<int,Account> _accounts = new Dictionary<int, Account>();
 	public Padanian_Service()
 	{
 
@@ -19,12 +19,12 @@ public class Padanian_Service : Ipadanian_Service
                 flag=false;
             }
         }
-        _accounts.Add(account.AccountId,account);
+        _accounts.Add(account.Id,account);
         return true;
 
     }
 
-    public bool deposit(Guid account_id, float ammount)
+    public bool deposit(int account_id, float ammount)
     {
         if(checkIfExists(account_id)==null){
             return false;
@@ -34,7 +34,7 @@ public class Padanian_Service : Ipadanian_Service
         return true;
     }
 
-    public string details(Guid account_id)
+    public string details(int account_id)
     {
          if(_accounts.TryGetValue(account_id,out var acc)){
             acc = _accounts[account_id];
@@ -45,7 +45,7 @@ public class Padanian_Service : Ipadanian_Service
         }
     }
 
-    public bool withdraw(Guid account_id, float ammount)
+    public bool withdraw(int account_id, float ammount)
     {
         
         if(checkIfExists(account_id)==null){
@@ -59,7 +59,7 @@ public class Padanian_Service : Ipadanian_Service
 
     }
 
-    public Account checkIfExists(Guid account_id){
+    public Account checkIfExists(int account_id){
 
         if(_accounts.TryGetValue(account_id,out var acc)){
             return acc;
