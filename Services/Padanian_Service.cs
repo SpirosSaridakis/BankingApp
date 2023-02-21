@@ -100,7 +100,7 @@ public class Padanian_Service : Ipadanian_Service
 
     }
 
-    public List<Account> Index(int userid)
+    public List<Account> Index(String userid)
     {
         List<Account> data = new List<Account>();
         data = _context.Account.Where(x=> x.UserId==userid).ToList();

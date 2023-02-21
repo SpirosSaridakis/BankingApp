@@ -20,7 +20,7 @@ namespace Padanian_Bank.Services.BankService{
 		
 		bool Delete(Guid account_id);
 
-		List<Account> Index(int userid);
+		List<Account> Index(String userid);
 
 		List<Account> Search(Guid account_id);
 

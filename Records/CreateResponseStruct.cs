@@ -8,7 +8,7 @@ namespace Johns_App.Records
         Desc desc;
         Currency currency;
         double balance;
-        int userId;
+        String userId;
 
         public CreateResponseStruct(Account acc){
             AccountId=acc.AccountId;

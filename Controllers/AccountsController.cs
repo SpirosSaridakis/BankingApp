@@ -25,7 +25,7 @@ namespace Padanian_Bank.Controllers
 
         // GET: Accounts
         [Authorize]
-        public IActionResult Index(int userid)
+        public IActionResult Index(String userid)
         {
             List<Account> list = _IpadanianService.Index(userid);
             if (list==null)
