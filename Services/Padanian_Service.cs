@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Padanian_Bank.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Security.Principal;
 
 public class Padanian_Service : Ipadanian_Service
 {
@@ -14,12 +15,8 @@ public class Padanian_Service : Ipadanian_Service
 	{
 
 	}
-    public bool create(Account account){
-        _context.Account.Add(account);
-        _context.SaveChanges();
-        return true;
-        
-        /*bool flag = true;
+    public Account create(Account account){
+        bool flag = true;
         while(flag){
             if(checkIfExists(account.AccountId)==null){
                 account.AccountId=Guid.NewGuid();
@@ -27,25 +24,22 @@ public class Padanian_Service : Ipadanian_Service
                 flag=false;
             }
         }
-        _accounts.Add(account.AccountId,account);
-        return true;*/
+        _context.Account.Add(account);
+        _context.SaveChanges();
+        return account;
 
     }
 
-    public bool deposit(Guid account_id, float ammount)
+    public Account deposit(Guid account_id, float ammount)
     {
         Account data = checkIfExists(account_id);
-        if (data != null)
+        if (data == null)
         {
-            data.Balance += ammount;
-            _context.SaveChanges();
-            return true;
+            return null;
         }
-        else
-        {
-            return false; 
-        }
-        
+        data.Balance += ammount;
+        _context.SaveChanges();
+        return data; 
         /*
         if(checkIfExists(account_id)==null){
             return false;
@@ -65,31 +59,22 @@ public class Padanian_Service : Ipadanian_Service
         {
             return null;
         }
-
-        /*
-         if(_accounts.TryGetValue(account_id,out var acc)){
-            acc = _accounts[account_id];
-            string details = "Description: "+acc.Desc+"\nBalance: "+acc.Balance+"\nCurrency: "+acc.Currency;
-            return details;
-        }else{
-            return "Account does not exist";
-        }*/
     }
 
-    public bool withdraw(Guid account_id, float ammount)
+    public Account withdraw(Guid account_id, float ammount)
     {
 
         Account data = checkIfExists(account_id);
         if (data==null){
-            return false;
+            return null;
         }
         if (data.Balance < ammount)
         {
-            return false;
+            return null;
         }
         data.Balance -= ammount;
         _context.SaveChanges();
-        return true;
+        return data;
         /*
         if(checkIfExists(account_id)==null){
             return false;
@@ -100,6 +85,41 @@ public class Padanian_Service : Ipadanian_Service
         //log transaction
         return true;
         */
+    }
+
+    public bool delete(Guid account_id)
+    {
+        Account data = checkIfExists(account_id) ;
+        if (data != null) 
+        {
+            _context.Account.Remove(data);
+            _context.SaveChanges();
+            return true;
+        }
+        return false;
+
+    }
+
+    public List<Account> index(int userid)
+    {
+        List<Account> data = new List<Account>();
+        data = _context.Account.Where(x=> x.UserId==userid).ToList();
+        if (!(data.Count > 0))
+        {
+            return null;
+        }    
+        return data;
+    }
+
+    public List<Account> search(Guid id)
+    {
+        List<Account> data = new List<Account>();
+        data = _context.Account.Where(x => x.AccountId == id).ToList();
+        if (!(data.Count > 0))
+        {
+            return null;
+        }
+        return data;
     }
 
     public Account checkIfExists(Guid account_id){
