@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Padanian_Bank.Models;
 using System.Collections.Generic;
+using Padanian_Bank.Data;
 
 namespace Padanian_Bank.Services.BankService{ 
 	
@@ -20,7 +21,7 @@ namespace Padanian_Bank.Services.BankService{
 		
 		bool Delete(Guid account_id);
 
-		List<Account> Index(int userid);
+		List<Account> Index(/*int userid*/);
 
 		List<Account> Search(Guid account_id);
 

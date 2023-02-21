@@ -17,17 +17,19 @@ namespace Padanian_Bank.Controllers
     public class AccountsController : Controller
     {
         private readonly Ipadanian_Service _IpadanianService;
+        
 
         public AccountsController(Ipadanian_Service _PadanianService)
         {
             _IpadanianService = _PadanianService;
+
         }
 
         // GET: Accounts
         [Authorize]
         public IActionResult Index(int userid)
         {
-            List<Account> list = _IpadanianService.Index(userid);
+            List<Account> list = _IpadanianService.Index(/*userid*/);
             if (list==null)
             {
                 return NotFound();
@@ -227,12 +229,15 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(/*[Bind("AccountId,Desc,Balance,Currency")] Account account*/ CreateAccountRequest crs)
+        public IActionResult Create([Bind("AccountId,Desc,Balance,Currency")] Account account)
         {
-            Account account = new Account(crs.desc, crs.balance, crs.currency, crs.userid);
-            var data = _IpadanianService.Create(account);
-            return (NullCheck(data));
-            
+            Account data = _IpadanianService.Create(account);
+            if (data==null)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Accounts/Edit/5

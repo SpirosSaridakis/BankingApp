@@ -33,7 +33,7 @@ namespace Padanian_Bank
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddSingleton<Ipadanian_Service, Padanian_Service>();
+            services.AddTransient<Ipadanian_Service, Padanian_Service>();
             services.AddControllersWithViews();
             services.AddRazorPages();
             

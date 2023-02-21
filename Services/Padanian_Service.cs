@@ -6,19 +6,20 @@ using Padanian_Bank.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Security.Principal;
+using Padanian_Bank.Data.Migrations;
 
 public class Padanian_Service : Ipadanian_Service
 {
     //private static readonly Dictionary<Guid,Account> _accounts = new Dictionary<Guid, Account>();
     private readonly ApplicationDbContext _context;
-    public Padanian_Service()
+    public Padanian_Service(ApplicationDbContext context)
 	{
-
+        _context = context;
 	}
     public Account Create(Account account){
         bool flag = true;
         while(flag){
-            if(checkIfExists(account.AccountId)==null){
+            if(checkIfExists(account.AccountId)!=null){
                 account.AccountId=Guid.NewGuid();
             }else{
                 flag=false;
@@ -100,14 +101,22 @@ public class Padanian_Service : Ipadanian_Service
 
     }
 
-    public List<Account> Index(int userid)
+    public List<Account> Index(/*int userid*/)
     {
-        List<Account> data = new List<Account>();
-        data = _context.Account.Where(x=> x.UserId==userid).ToList();
+        List<Account> data = new List<Account>();        
+        data = _context.Account.ToList();/*.Where(x=> x.UserId==userid)*/
+        Account acc = new Account(Desc.Salary, 10.0, Currency.Euro, 1);
+        data.Add(acc);
+        /*if (data == null)
+        {
+            Account acc = new Account(Desc.Salary,10.0,Currency.Euro,1);
+            _context.Add(acc);
+            _context.SaveChanges();
+        }*/
         if (!(data.Count > 0))
         {
             return null;
-        }    
+        }
         return data;
     }
 
@@ -124,15 +133,13 @@ public class Padanian_Service : Ipadanian_Service
 
     public Account checkIfExists(Guid account_id){
 
-        Account data = (Account)_context.Account.Where(x => x.AccountId == account_id);
-        if (data != null)
-        {
-            return data;
-        }
-        else
+        bool flag = _context.Account.Any(e => e.AccountId == account_id);
+        if (!flag)
         {
             return null;
         }
+        return _context.Account.Find(account_id);
+        
     }
 
     
