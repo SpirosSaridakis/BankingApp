@@ -15,7 +15,7 @@ public class Padanian_Service : Ipadanian_Service
 	{
 
 	}
-    public Account create(Account account){
+    public Account Create(Account account){
         bool flag = true;
         while(flag){
             if(checkIfExists(account.AccountId)==null){
@@ -30,7 +30,7 @@ public class Padanian_Service : Ipadanian_Service
 
     }
 
-    public Account deposit(Guid account_id, float ammount)
+    public Account Deposit(Guid account_id, float ammount)
     {
         Account data = checkIfExists(account_id);
         if (data == null)
@@ -49,7 +49,7 @@ public class Padanian_Service : Ipadanian_Service
         return true;*/
     }
 
-    public Account details(Guid account_id)
+    public Account Details(Guid account_id)
     {
         Account data = checkIfExists(account_id);
         if (data != null) {
@@ -61,7 +61,7 @@ public class Padanian_Service : Ipadanian_Service
         }
     }
 
-    public Account withdraw(Guid account_id, float ammount)
+    public Account Withdraw(Guid account_id, float ammount)
     {
 
         Account data = checkIfExists(account_id);
@@ -87,7 +87,7 @@ public class Padanian_Service : Ipadanian_Service
         */
     }
 
-    public bool delete(Guid account_id)
+    public bool Delete(Guid account_id)
     {
         Account data = checkIfExists(account_id) ;
         if (data != null) 
@@ -100,7 +100,7 @@ public class Padanian_Service : Ipadanian_Service
 
     }
 
-    public List<Account> index(int userid)
+    public List<Account> Index(int userid)
     {
         List<Account> data = new List<Account>();
         data = _context.Account.Where(x=> x.UserId==userid).ToList();
@@ -111,7 +111,7 @@ public class Padanian_Service : Ipadanian_Service
         return data;
     }
 
-    public List<Account> search(Guid id)
+    public List<Account> Search(Guid id)
     {
         List<Account> data = new List<Account>();
         data = _context.Account.Where(x => x.AccountId == id).ToList();

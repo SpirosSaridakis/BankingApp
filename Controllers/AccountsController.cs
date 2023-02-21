@@ -27,7 +27,7 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         public IActionResult Index(int userid)
         {
-            List<Account> list = _IpadanianService.index(userid);
+            List<Account> list = _IpadanianService.Index(userid);
             if (list==null)
             {
                 return NotFound();
@@ -48,7 +48,7 @@ namespace Padanian_Bank.Controllers
         [HttpPost]
         public IActionResult ShowSearchResults(Guid SearchPhrase)
         {
-            List<Account> list = _IpadanianService.search(SearchPhrase);
+            List<Account> list = _IpadanianService.Search(SearchPhrase);
             if (list == null)
             {
                 return NotFound();
@@ -65,7 +65,7 @@ namespace Padanian_Bank.Controllers
             {
                 return NotFound();
             }
-            var account = _IpadanianService.details(id);
+            var account = _IpadanianService.Details(id);
             return (NullCheck(account));
             /*
             var account = await _context.Account.FindAsync(id);
@@ -82,7 +82,7 @@ namespace Padanian_Bank.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Deposit(Guid id, float Funds/*, [Bind("AccountId,Desc,Balance,Currency")] Account account*/)
         {
-            Account acc = _IpadanianService.deposit(id, Funds);
+            Account acc = _IpadanianService.Deposit(id, Funds);
             if (acc == null)
             {
                 return NotFound();
@@ -127,7 +127,7 @@ namespace Padanian_Bank.Controllers
             {
                 return NotFound();
             }
-            var account = _IpadanianService.details(id);
+            var account = _IpadanianService.Details(id);
             return (NullCheck(account));
         }
 
@@ -137,7 +137,7 @@ namespace Padanian_Bank.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Withdraw(Guid id, float Funds)
         {
-            Account acc = _IpadanianService.withdraw(id, Funds);
+            Account acc = _IpadanianService.Withdraw(id, Funds);
             if (acc == null)
             {
                 return NotFound();
@@ -154,7 +154,7 @@ namespace Padanian_Bank.Controllers
                 return NotFound();
             }
 
-            var account = _IpadanianService.details(id);
+            var account = _IpadanianService.Details(id);
             return (NullCheck(account));
         }
         /*
@@ -210,7 +210,7 @@ namespace Padanian_Bank.Controllers
             {
                 return NotFound();
             }
-            var account = _IpadanianService.details(id);
+            var account = _IpadanianService.Details(id);
             return (NullCheck(account));
         }
 
@@ -230,7 +230,7 @@ namespace Padanian_Bank.Controllers
         public IActionResult Create(/*[Bind("AccountId,Desc,Balance,Currency")] Account account*/ CreateAccountRequest crs)
         {
             Account account = new Account(crs.desc, crs.balance, crs.currency, crs.userid);
-            var data = _IpadanianService.create(account);
+            var data = _IpadanianService.Create(account);
             return (NullCheck(data));
             
         }
@@ -243,7 +243,7 @@ namespace Padanian_Bank.Controllers
             {
                 return NotFound();
             }
-            Account acc = _IpadanianService.details(id);
+            Account acc = _IpadanianService.Details(id);
             return(NullCheck(acc));
 
             /*
@@ -303,7 +303,7 @@ namespace Padanian_Bank.Controllers
                 return NotFound();
             }
 
-            Account acc = _IpadanianService.details(id);
+            Account acc = _IpadanianService.Details(id);
             return (NullCheck(acc));
         }
 
@@ -314,7 +314,7 @@ namespace Padanian_Bank.Controllers
         //Here is the method that actually deletes the account
         public IActionResult DeleteConfirmed(Guid id)
         {
-            bool result = _IpadanianService.delete(id);
+            bool result = _IpadanianService.Delete(id);
             if (result)
             {
                 return RedirectToAction(nameof(Index));
