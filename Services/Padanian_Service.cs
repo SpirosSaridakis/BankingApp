@@ -105,19 +105,27 @@ public class Padanian_Service : Ipadanian_Service
     {
         List<Account> data = new List<Account>();        
         data = _context.Account.ToList();/*.Where(x=> x.UserId==userid)*/
-        Account acc = new Account(Desc.Salary, 10.0, Currency.Euro, 1);
-        data.Add(acc);
-        /*if (data == null)
-        {
-            Account acc = new Account(Desc.Salary,10.0,Currency.Euro,1);
-            _context.Add(acc);
-            _context.SaveChanges();
-        }*/
         if (!(data.Count > 0))
         {
             return null;
         }
         return data;
+    }
+
+    public Account Transfer(Guid recvId, Guid sendId,float funds) 
+    {
+        Account with = Details(sendId);
+        Account dep = Details(recvId);
+        if (with == null || dep==null)
+        {
+            return null;
+        }else if (dep.Currency != with.Currency)
+        {
+            return null;
+        }
+        with = Withdraw(sendId,funds);
+        dep = Deposit(recvId, funds);
+        return with;
     }
 
     public List<Account> Search(Guid id)

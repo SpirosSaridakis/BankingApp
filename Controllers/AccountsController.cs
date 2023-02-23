@@ -69,56 +69,17 @@ namespace Padanian_Bank.Controllers
             }
             var account = _IpadanianService.Details(id);
             return (NullCheck(account));
-            /*
-            var account = await _context.Account.FindAsync(id);
-            if (account == null)
-            {
-                return NotFound();
-            }
-            return View(account);*/
         }
 
         // POST: Accounts/Deposit/5
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Deposit(Guid id, float Funds/*, [Bind("AccountId,Desc,Balance,Currency")] Account account*/)
+        public IActionResult Deposit(Guid id, float Funds)
         {
             Account acc = _IpadanianService.Deposit(id, Funds);
-            if (acc == null)
-            {
-                return NotFound();
-            }
-            return View(acc);
+            return RedirectCheck(acc);
 
-            /*
-            if (id != account.AccountId)
-            {
-                return NotFound();
-            }
-
-            account.Balance += Funds;
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(account);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.AccountId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }*/
         }
 
         // GET: Accounts/Withdraw/5
@@ -140,11 +101,7 @@ namespace Padanian_Bank.Controllers
         public IActionResult Withdraw(Guid id, float Funds)
         {
             Account acc = _IpadanianService.Withdraw(id, Funds);
-            if (acc == null)
-            {
-                return NotFound();
-            }    
-            return View(acc);
+            return RedirectCheck(acc);
         }
 
         // GET: Accounts/Transfer/5
@@ -159,51 +116,18 @@ namespace Padanian_Bank.Controllers
             var account = _IpadanianService.Details(id);
             return (NullCheck(account));
         }
-        /*
+        
 
         // POST: Accounts/Transfer/5
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Transfer(Guid id, Guid AccId, float Funds, [Bind("AccountId,Desc,Balance,Currency")] Account account)
+        public IActionResult Transfer(Guid AccId, float Funds, Account account)
         {
-            if (id != account.AccountId)
-            {
-                return NotFound();
-            }
-
-            if ((account.Balance - Funds) >= 0)
-            {
-                account.Balance = account.Balance - Funds;
-
-                Account acc = new Account();
-                acc.AccountId = AccId;
-                acc.Balance = acc.Balance + Funds;
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(account);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.AccountId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(account);
+            Account recvAcc = _IpadanianService.Transfer(AccId, account.AccountId, Funds);
+            return NullCheck(recvAcc);
+            
         }
-        */
         // GET: Accounts/Details/5
         [Authorize]
         public IActionResult Details(Guid id)
@@ -232,11 +156,7 @@ namespace Padanian_Bank.Controllers
         public IActionResult Create([Bind("AccountId,Desc,Balance,Currency")] Account account)
         {
             Account data = _IpadanianService.Create(account);
-            if (data==null)
-            {
-                return NotFound();
-            }
-            return RedirectToAction(nameof(Index));
+            return RedirectCheck(data);
 
         }
 
@@ -334,6 +254,15 @@ namespace Padanian_Bank.Controllers
                 return NotFound();
             }
             return View(acc);
+        }
+
+        public IActionResult RedirectCheck(Account acc)
+        {
+            if (acc == null)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

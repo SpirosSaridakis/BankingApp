@@ -21,6 +21,8 @@ namespace Padanian_Bank.Services.BankService{
 		
 		bool Delete(Guid account_id);
 
+		Account Transfer(Guid recvId, Guid sendId,float ammount);
+
 		List<Account> Index(/*int userid*/);
 
 		List<Account> Search(Guid account_id);
