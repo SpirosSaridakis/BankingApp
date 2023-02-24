@@ -14,5 +14,7 @@ namespace Padanian_Bank.Data
         {
         }
         public DbSet<Padanian_Bank.Models.Account> Account { get; set; }
+        
     }
 }
+

@@ -25,13 +25,14 @@ namespace Padanian_Bank.Models
         public double Balance { get; set; }
         [DisplayFormat(NullDisplayText = "No Currency")]
         public Currency? Currency { get; set; }
-        public int UserId;
-        
+        public String UserId { get; set; }
+
+
         public Account(){
             
         }
         
-        public Account(Desc Adesc, double Abalance, Currency Acurrency, int AuserId)
+        public Account(Desc Adesc, double Abalance, Currency Acurrency, String AuserId)
             {
                 AccountId = Guid.NewGuid();
                 Desc=Adesc;
