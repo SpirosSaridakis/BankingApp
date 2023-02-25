@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Padanian_Bank.Models.Account>
 
-@{
+    @{
     ViewData["Title"] = "My Accounts";
-}
+    }
 
-<h1>Accounts</h1>
+    <h1>Accounts</h1>
 
 @if (User.IsInRole("Customer"))
 {

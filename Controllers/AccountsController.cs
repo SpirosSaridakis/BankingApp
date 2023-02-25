@@ -1,48 +1,47 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Padanian_Bank.Data;
 using Padanian_Bank.Models;
 using Padanian_Bank.Services.BankService;
+using System.Security.Claims;
 
 namespace Padanian_Bank.Controllers
 {
     public class AccountsController : Controller
     {
+        private readonly Ipadanian_Service _IpadanianService;
         public String Id { get; set; }
-        private readonly ApplicationDbContext _context;
 
-     
-        public AccountsController(ApplicationDbContext context)
+
+        public AccountsController(Ipadanian_Service _PadanianService)
         {
-            _context = context;
+            _IpadanianService = _PadanianService;
+
         }
+
 
         // GET: Accounts
         [Authorize]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             if (User.IsInRole("Customer"))
             {
                 Id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                return View(await _context.Account.Where( j => j.UserId == Id).ToListAsync());
-            }
-            else if(User.IsInRole("Employee"))
+                List<Account> list = _IpadanianService.Index(Id);
+                return View(list);
+            }else if (User.IsInRole("Employee"))
             {
-                return View(await _context.Account.ToListAsync());
+                List<Account> list = _IpadanianService.Index();
+                return View(list);
             }
-
             return NotFound();
+            
         }
 
         // GET: Accounts/ShowSearchForm
-        [Authorize(Roles ="Employee")]
+        [Authorize(Roles = "Employee")]
         public IActionResult ShowSearchForm()
         {
             return View();
@@ -50,200 +49,103 @@ namespace Padanian_Bank.Controllers
 
         // POST: Accounts/ShowSearchResults
         [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee")]
         [HttpPost]
-        public async Task<IActionResult> ShowSearchResults(Guid SearchPhrase)
+        public IActionResult ShowSearchResults(Guid SearchPhrase)
         {
-            return View("Index", await _context.Account.Where( j => j.AccountId.Equals(SearchPhrase)).ToListAsync());
+            List<Account> list = _IpadanianService.Search(SearchPhrase);
+            if (list == null)
+            {
+                return NotFound();
+            }
+            return View("Index", list);
         }
 
         // GET: Accounts/Deposit/5
         [Authorize]
-        public async Task<IActionResult> Deposit(Guid id)
+        public IActionResult Deposit(Guid id)
         {
+            
             if (id == null)
             {
                 return NotFound();
             }
-
-            var account = await _context.Account.FindAsync(id);
-            if (account == null)
-            {
-                return NotFound();
-            }
-            return View(account);
+            var account = _IpadanianService.Details(id);
+            return (NullCheck(account));
         }
 
         // POST: Accounts/Deposit/5
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Deposit(Guid id, float Funds, [Bind("AccountId,Desc,Balance,Currency")] Account account)
+        public IActionResult Deposit(Guid id, float Funds)
+        {
+            Account acc = _IpadanianService.Deposit(id, Funds);
+            return RedirectCheck(acc);
+
+        }
+
+        // GET: Accounts/Withdraw/5
+        [Authorize]
+        public IActionResult Withdraw(Guid id)
         {
             if (id != account.AccountId)
             {
                 return NotFound();
             }
-
-                account.Balance = account.Balance + Funds;
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    Id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                    account.UserId = Id;
-                    _context.Update(account);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.AccountId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(account);
-        }
-
-        // GET: Accounts/Withdraw/5
-        [Authorize]
-        public async Task<IActionResult> Withdraw(Guid id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var account = await _context.Account.FindAsync(id);
-            if (account == null)
-            {
-                return NotFound();
-            }
-            return View(account);
+            var account = _IpadanianService.Details(id);
+            return (NullCheck(account));
         }
 
         // POST: Accounts/Withdraw/5
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Withdraw(Guid id, float Funds, [Bind("AccountId,Desc,Balance,Currency")] Account account)
+        public IActionResult Withdraw(Guid id, float Funds)
         {
-            if (id != account.AccountId)
-            {
-                return NotFound();
-            }
-
-            if ((account.Balance - Funds) >= 0)
-            {
-                account.Balance = account.Balance - Funds;
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    Id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                    account.UserId = Id;
-                    _context.Update(account);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.AccountId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(account);
+            Account acc = _IpadanianService.Withdraw(id, Funds);
+            return RedirectCheck(acc);
         }
 
         // GET: Accounts/Transfer/5
         [Authorize]
-        public async Task<IActionResult> Transfer(Guid id)
+        public IActionResult Transfer(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var account = await _context.Account.FindAsync(id);
-            if (account == null)
+            if ((account.Balance - Funds) >= 0)
             {
-                return NotFound();
+                account.Balance = account.Balance - Funds;
             }
-            return View(account);
+
+            var account = _IpadanianService.Details(id);
+            return (NullCheck(account));
         }
+        
 
         // POST: Accounts/Transfer/5
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Transfer(Guid id, Guid AccId, float Funds, [Bind("AccountId,Desc,Balance,Currency")] Account account)
+        public IActionResult Transfer(Guid AccId, float Funds, Account account)
         {
-            if (id != account.AccountId)
-            {
-                return NotFound();
-            }
-
-
-            if ((account.Balance - Funds) >= 0)
-            {
-                account.Balance = account.Balance - Funds;
-
-                Account acc = new Account();
-                acc.AccountId = AccId;
-                acc.Balance = acc.Balance + Funds;
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    Id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                    account.UserId = Id;
-                    _context.Update(account);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.AccountId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(account);
+            Account recvAcc = _IpadanianService.Transfer(AccId, account.AccountId, Funds);
+            return NullCheck(recvAcc);
+            
         }
-
         // GET: Accounts/Details/5
         [Authorize]
-        public async Task<IActionResult> Details(Guid? id)
+        public IActionResult Details(Guid id)
         {
-            var account = await _context.Account.FirstOrDefaultAsync(m => m.AccountId == id);
-
-            if (account == null)
+            if (id == null)
             {
                 return NotFound();
             }
-
-            return View(account);
+            var account = _IpadanianService.Details(id);
+            return (NullCheck(account));
         }
 
         // GET: Accounts/Create
@@ -259,107 +161,87 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AccountId,Desc,Balance,Currency")] Account account)
+        public IActionResult Create([Bind("AccountId,Desc,Balance,Currency")] Account account)
         {
-            if (ModelState.IsValid)
-            {
-                Id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                account.UserId = Id;
-                _context.Add(account);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(account);
+            account.UserId= User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Account data = _IpadanianService.Create(account);
+            return RedirectCheck(data);
+
         }
 
         // GET: Accounts/Edit/5
-        [Authorize(Roles ="Employee")]
-        public async Task<IActionResult> Edit(Guid? id)
+        [Authorize]
+        public IActionResult Edit(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            Account acc = _IpadanianService.Details(id);
+            return(NullCheck(acc));
 
-            var account = await _context.Account.FindAsync(id);
-
-            if (account == null)
-            {
-                return NotFound();
-            }
-            return View(account);
+           
         }
 
         // POST: Accounts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [Authorize(Roles = "Employee")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AccountId,Desc,Balance,Currency")] Account account)
+        public IActionResult Edit(Guid AccountId, Desc Desc)
         {
-            if (id != account.AccountId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(account);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.AccountId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(account);
+            Account data = _IpadanianService.Edit(AccountId, Desc);
+            return (RedirectCheck(data));
         }
+        
 
         // GET: Accounts/Delete/5
-        [Authorize(Roles = "Employee")]
-        public async Task<IActionResult> Delete(Guid? id)
+        [Authorize]
+        public IActionResult Delete(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.AccountId == id);
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            return View(account);
+            Account acc = _IpadanianService.Details(id);
+            return (NullCheck(acc));
         }
 
         // POST: Accounts/Delete/5
         [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+
+        public IActionResult DeleteConfirmed(Guid id)
         {
-            var account = await _context.Account.FindAsync(id);
-            _context.Account.Remove(account);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            bool result = _IpadanianService.Delete(id);
+            if (result)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return NotFound();
         }
 
-        private bool AccountExists(Guid id)
+        public IActionResult NullCheck(Account acc)
         {
-            return _context.Account.Any(e => e.AccountId == id);
+            if (acc == null)
+            {
+                return NotFound();
+            }
+            return View(acc);
+        }
+
+        public IActionResult RedirectCheck(Account acc)
+        {
+            if (acc == null)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -20,15 +20,15 @@ namespace Padanian_Bank.Models
     {
         public Guid AccountId { get; set; }
         [DisplayFormat(NullDisplayText = "No Description")]
-        public Desc? Desc { get; set; }
+        public Desc Desc { get; set; }
         [DisplayFormat(NullDisplayText = "Zero Balance")]
         public double Balance { get; set; }
         [DisplayFormat(NullDisplayText = "No Currency")]
-        public Currency? Currency { get; set; }
+        public Currency Currency { get; set; }
         public String UserId { get; set; }
 
-
-        public Account(){
+        public Account()
+        {
             
         }
         
