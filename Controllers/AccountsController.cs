@@ -21,6 +21,7 @@ namespace Padanian_Bank.Controllers
 
         }
 
+
         // GET: Accounts
         [Authorize]
         public IActionResult Index()
@@ -47,6 +48,7 @@ namespace Padanian_Bank.Controllers
         }
 
         // POST: Accounts/ShowSearchResults
+        [Authorize(Roles = "Employee")]
         [Authorize(Roles = "Employee")]
         [HttpPost]
         public IActionResult ShowSearchResults(Guid SearchPhrase)
@@ -87,7 +89,7 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         public IActionResult Withdraw(Guid id)
         {
-            if (id == null)
+            if (id != account.AccountId)
             {
                 return NotFound();
             }
@@ -112,6 +114,11 @@ namespace Padanian_Bank.Controllers
             if (id == null)
             {
                 return NotFound();
+            }
+
+            if ((account.Balance - Funds) >= 0)
+            {
+                account.Balance = account.Balance - Funds;
             }
 
             var account = _IpadanianService.Details(id);
@@ -204,6 +211,7 @@ namespace Padanian_Bank.Controllers
         }
 
         // POST: Accounts/Delete/5
+        [Authorize(Roles = "Employee")]
         [Authorize(Roles = "Employee")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

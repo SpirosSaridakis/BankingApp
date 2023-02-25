@@ -6,9 +6,12 @@
 
     <h1>Accounts</h1>
 
+@if (User.IsInRole("Customer"))
+{
     <p>
         <a asp-action="Create">Create New Account</a>
     </p>
+}
     <table class="table">
         <thead>
             <tr>
@@ -21,11 +24,17 @@
                 <th>
                     Currency
                 </th>
-                <th></th>
-            </tr>
+                @if (User.IsInRole("Employee"))
+                {
+                    <th>
+                        Balance
+                    </th>
+                }
+                </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model) {
+            @foreach (var item in Model)
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.AccountId)
@@ -36,15 +45,27 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Currency)
                 </td>
+                @if (User.IsInRole("Employee"))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Balance)
+                    </td>
+                }
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.AccountId">See Balace</a>|
-                    <a asp-action="Transfer" asp-route-id="@item.AccountId">Transfer Funds</a>|
-                    <a asp-action="Deposit" asp-route-id="@item.AccountId">Deposit</a>|
-                    <a asp-action="Withdraw" asp-route-id="@item.AccountId">Withdraw</a>|
-                    <a asp-action="Edit" asp-route-id="@item.AccountId">Edit Description</a>|
-                    <a asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
+                    @if (User.IsInRole("Customer"))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.AccountId">See Balace |</a>
+                    }
+                    <a asp-action="Transfer" asp-route-id="@item.AccountId">Transfer Funds |</a>
+                    <a asp-action="Deposit" asp-route-id="@item.AccountId">Deposit |</a>
+                    <a asp-action="Withdraw" asp-route-id="@item.AccountId">Withdraw</a>
+                    @if (User.IsInRole("Employee"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.AccountId">| Edit Description |</a>
+                        <a asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
+                    }
                 </td>
             </tr>
-}
+            }
         </tbody>
     </table>
