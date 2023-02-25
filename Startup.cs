@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Padanian_Bank.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Padanian_Bank
@@ -35,11 +34,11 @@ namespace Padanian_Bank
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
-                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddTransient<Ipadanian_Service, Padanian_Service>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("ElevatedRights", policy =>

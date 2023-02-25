@@ -89,7 +89,7 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         public IActionResult Withdraw(Guid id)
         {
-            if (id != account.AccountId)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -114,11 +114,6 @@ namespace Padanian_Bank.Controllers
             if (id == null)
             {
                 return NotFound();
-            }
-
-            if ((account.Balance - Funds) >= 0)
-            {
-                account.Balance = account.Balance - Funds;
             }
 
             var account = _IpadanianService.Details(id);
