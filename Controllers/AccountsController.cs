@@ -1,14 +1,8 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Johns_App.Records;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Padanian_Bank.Data;
 using Padanian_Bank.Models;
 using Padanian_Bank.Services.BankService;
 
@@ -171,54 +165,23 @@ namespace Padanian_Bank.Controllers
             Account acc = _IpadanianService.Details(id);
             return(NullCheck(acc));
 
-            /*
-            
-
-            var account = await _context.Account.FindAsync(id);
-            if (account == null)
-            {
-                return NotFound();
-            }
-            return View(account);
-            */
+           
         }
-        /*
+        
         // POST: Accounts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AccountId,Desc,Balance,Currency")] Account account)
+        public IActionResult Edit(Guid AccountId, Desc Desc)
         {
-            if (id != account.AccountId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(account);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.AccountId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(account);
+            Account data = _IpadanianService.Edit(AccountId, Desc);
+            return (RedirectCheck(data));
         }
-        */
+        
+
         // GET: Accounts/Delete/5
         [Authorize]
         public IActionResult Delete(Guid id)
@@ -236,7 +199,7 @@ namespace Padanian_Bank.Controllers
         [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        //Here is the method that actually deletes the account
+
         public IActionResult DeleteConfirmed(Guid id)
         {
             bool result = _IpadanianService.Delete(id);

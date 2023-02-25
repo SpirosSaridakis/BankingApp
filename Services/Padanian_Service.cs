@@ -128,6 +128,23 @@ public class Padanian_Service : Ipadanian_Service
         return with;
     }
 
+    public Account Edit(Guid account_id,Desc desc)
+    {
+        if(account_id == null)
+        {
+            return null;
+        }
+        Account data = checkIfExists(account_id);
+        if (data == null)
+        {
+            return null;
+        }
+        data.Desc = desc;
+        _context.Account.Update(data);
+        _context.SaveChanges();
+        return data;
+    }
+
     public List<Account> Search(Guid id)
     {
         List<Account> data = new List<Account>();

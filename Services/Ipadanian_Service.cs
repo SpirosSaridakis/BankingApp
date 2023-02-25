@@ -11,6 +11,7 @@ namespace Padanian_Bank.Services.BankService{
 	{
 
 		Account Create(Account account);
+
         Account Deposit(Guid account_id, float ammount);
 
 		Account Withdraw(Guid account_id, float ammount);
@@ -24,6 +25,8 @@ namespace Padanian_Bank.Services.BankService{
 		Account Transfer(Guid recvId, Guid sendId,float ammount);
 
 		List<Account> Index(/*int userid*/);
+
+		Account Edit(Guid account_id,Desc desc);
 
 		List<Account> Search(Guid account_id);
 
