@@ -5,13 +5,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Padanian_Bank.Models;
 using Padanian_Bank.Services.BankService;
+using System.Security.Claims;
 
 namespace Padanian_Bank.Controllers
 {
     public class AccountsController : Controller
     {
         private readonly Ipadanian_Service _IpadanianService;
-        
+        public String Id { get; set; }
+
 
         public AccountsController(Ipadanian_Service _PadanianService)
         {
@@ -21,26 +23,31 @@ namespace Padanian_Bank.Controllers
 
         // GET: Accounts
         [Authorize]
-        public IActionResult Index(String userid)
+        public IActionResult Index()
         {
-            List<Account> list = _IpadanianService.Index(/*userid*/);
-            if (list==null)
+            if (User.IsInRole("Customer"))
             {
-                return NotFound();
+                Id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                List<Account> list = _IpadanianService.Index(Id);
+                return View(list);
+            }else if (User.IsInRole("Employee"))
+            {
+                List<Account> list = _IpadanianService.Index();
+                return View(list);
             }
-            return View(list);
-            //return View(await _context.Account.ToListAsync());
+            return NotFound();
+            
         }
 
         // GET: Accounts/ShowSearchForm
-        [Authorize]
+        [Authorize(Roles = "Employee")]
         public IActionResult ShowSearchForm()
         {
             return View();
         }
 
         // POST: Accounts/ShowSearchResults
-        [Authorize]
+        [Authorize(Roles = "Employee")]
         [HttpPost]
         public IActionResult ShowSearchResults(Guid SearchPhrase)
         {
@@ -149,6 +156,7 @@ namespace Padanian_Bank.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("AccountId,Desc,Balance,Currency")] Account account)
         {
+            account.UserId= User.FindFirst(ClaimTypes.NameIdentifier).Value;
             Account data = _IpadanianService.Create(account);
             return RedirectCheck(data);
 
@@ -167,12 +175,12 @@ namespace Padanian_Bank.Controllers
 
            
         }
-        
+
         // POST: Accounts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 
-        [Authorize]
+        [Authorize(Roles = "Employee")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Guid AccountId, Desc Desc)
@@ -196,7 +204,7 @@ namespace Padanian_Bank.Controllers
         }
 
         // POST: Accounts/Delete/5
-        [Authorize]
+        [Authorize(Roles = "Employee")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 

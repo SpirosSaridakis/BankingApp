@@ -25,8 +25,8 @@ namespace Padanian_Bank.Models
         public double Balance { get; set; }
         [DisplayFormat(NullDisplayText = "No Currency")]
         public Currency Currency { get; set; }
-        public String UserId;
-        
+        public String UserId { get; set; }
+
         public Account()
         {
             

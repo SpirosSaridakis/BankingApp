@@ -101,10 +101,21 @@ public class Padanian_Service : Ipadanian_Service
 
     }
 
-    public List<Account> Index(/*int userid*/)
+    public List<Account> Index()
     {
         List<Account> data = new List<Account>();        
-        data = _context.Account.ToList();/*.Where(x=> x.UserId==userid)*/
+        data = _context.Account.ToList();
+        if (!(data.Count > 0))
+        {
+            return null;
+        }
+        return data;
+    }
+
+    public List<Account> Index(string userid)
+    {
+        List<Account> data = new List<Account>();
+        data = _context.Account.Where(j => j.UserId == userid).ToList();
         if (!(data.Count > 0))
         {
             return null;

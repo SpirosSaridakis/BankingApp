@@ -24,7 +24,9 @@ namespace Padanian_Bank.Services.BankService{
 
 		Account Transfer(Guid recvId, Guid sendId,float ammount);
 
-		List<Account> Index(/*int userid*/);
+		List<Account> Index();
+
+		List<Account> Index(string userid);
 
 		Account Edit(Guid account_id,Desc desc);
 
