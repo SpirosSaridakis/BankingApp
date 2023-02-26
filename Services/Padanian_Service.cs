@@ -116,7 +116,7 @@ public class Padanian_Service : Ipadanian_Service
     {
         List<Account> data = new List<Account>();
         data = _context.Account.Where(j => j.UserId == userid).ToList();
-        if (!(data.Count > 0))
+        if (data==null)
         {
             return null;
         }

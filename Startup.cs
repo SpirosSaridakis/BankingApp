@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Padanian_Bank.Services.BankService;
 
 namespace Padanian_Bank
 {
@@ -35,6 +36,7 @@ namespace Padanian_Bank
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddTransient<Ipadanian_Service, Padanian_Service>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
