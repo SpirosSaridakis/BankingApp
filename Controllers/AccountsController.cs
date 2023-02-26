@@ -68,7 +68,7 @@ namespace Padanian_Bank.Controllers
             
             if (id == null)
             {
-                return NotFound();
+                return NullCheck(null);
             }
             var account = _IpadanianService.Details(id);
             return (NullCheck(account));
@@ -221,11 +221,12 @@ namespace Padanian_Bank.Controllers
             return NotFound();
         }
 
+        
         public IActionResult NullCheck(Account acc)
         {
             if (acc == null)
             {
-                return NotFound();
+                return View("NullCheck");
             }
             return View(acc);
         }
@@ -234,7 +235,7 @@ namespace Padanian_Bank.Controllers
         {
             if (acc == null)
             {
-                return NotFound();
+                return View("Redi");
             }
             return RedirectToAction(nameof(Index));
         }

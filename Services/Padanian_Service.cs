@@ -33,6 +33,10 @@ public class Padanian_Service : Ipadanian_Service
 
     public Account Deposit(Guid account_id, float ammount)
     {
+        if (ammount <=0)
+        {
+            return null;
+        }
         Account data = checkIfExists(account_id);
         if (data == null)
         {
@@ -64,7 +68,10 @@ public class Padanian_Service : Ipadanian_Service
 
     public Account Withdraw(Guid account_id, float ammount)
     {
-
+        if (ammount <= 0)
+        {
+            return null;
+        }
         Account data = checkIfExists(account_id);
         if (data==null){
             return null;
@@ -76,16 +83,7 @@ public class Padanian_Service : Ipadanian_Service
         data.Balance -= ammount;
         _context.SaveChanges();
         return data;
-        /*
-        if(checkIfExists(account_id)==null){
-            return false;
-        }else if(_accounts[account_id].Balance<ammount){
-            return false;
-        }
-        _accounts[account_id].Balance-=ammount;
-        //log transaction
-        return true;
-        */
+
     }
 
     public bool Delete(Guid account_id)
@@ -125,6 +123,10 @@ public class Padanian_Service : Ipadanian_Service
 
     public Account Transfer(Guid recvId, Guid sendId,float funds) 
     {
+        if (funds <= 0)
+        {
+            return null;
+        }
         Account with = Details(sendId);
         Account dep = Details(recvId);
         if (with == null || dep==null)
