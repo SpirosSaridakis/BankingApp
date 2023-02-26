@@ -1,9 +1,0 @@
-POST https://localhost:5001/Accounts/Create
-Content-Type: application/json
-
-{
-    "desc": "Salary",
-    "currency": "Euro",
-    "balance": "9.90",
-    "userid": "1"
-}
