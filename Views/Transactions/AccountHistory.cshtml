@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Padanian_Bank.Models.Transaction>
 
-@{
-    ViewData["Title"] = "My Transactions";
-}
+    @{
+        ViewData["Title"] = "My Transactions";
+    }
 
-<h1>Transactions</h1>
+<h1>For Account</h1> 
 
     <table class="table">
         <thead>
@@ -16,15 +16,12 @@
                     Funds
                 </th>
                 <th>
-                    Account ID
-                </th>
-                <th>
                     Time
                 </th>
             </tr>
         </thead>
         <tbody>
-           @foreach (var item in Model)
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>
@@ -32,9 +29,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Funds)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Account_id)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Timestamp)

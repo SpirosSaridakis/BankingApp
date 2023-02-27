@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Padanian_Bank.Models
 {
@@ -14,6 +15,8 @@ namespace Padanian_Bank.Models
         public float Funds { get; set;}
 
         public DateTime Timestamp { get; set;}
+
+        [Key]
 
         public Guid Account_id { get; set;}
 
