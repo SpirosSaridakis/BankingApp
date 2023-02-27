@@ -225,6 +225,10 @@ namespace Padanian_Bank.Controllers
         public IActionResult AccountHistory(Guid account_id)
         {
             List<Transaction> transactions = _IpadanianService.GetAccountTransactions(account_id);
+            if(transactions.Count == 0)
+            {
+                return NotFound();
+            }
             return View(transactions);
         }
 

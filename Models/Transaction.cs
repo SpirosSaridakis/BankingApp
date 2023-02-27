@@ -17,7 +17,7 @@ namespace Padanian_Bank.Models
         public DateTime Timestamp { get; set;}
 
         [Key]
-
+        public int TransactionId { get; set;}
         public Guid Account_id { get; set;}
 
         public Transaction()
