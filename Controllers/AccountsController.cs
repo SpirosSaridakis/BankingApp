@@ -242,7 +242,7 @@ namespace Padanian_Bank.Controllers
         {
             if (acc == null)
             {
-                return View("Redi");
+                return View("RedirectCheck");
             }
             return RedirectToAction(nameof(Index));
         }
