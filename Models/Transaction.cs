@@ -2,14 +2,14 @@
 
 namespace Padanian_Bank.Models
 {
-    public enum Type
+    public enum TransactionType
     {
         Deposit, Withdrawal, TransferFrom, TransferTo
     }
 
     public class Transaction
     {
-        public Type Type {get; set;}
+        public TransactionType Type {get; set;}
 
         public float Funds { get; set;}
 
@@ -22,7 +22,7 @@ namespace Padanian_Bank.Models
 
         }
 
-        public Transaction(Type Atype, float Afunds, DateTime Atimestamp, Guid Aaccount_id)
+        public Transaction(TransactionType Atype, float Afunds, DateTime Atimestamp, Guid Aaccount_id)
         {
             Type=Atype;
             Funds=Afunds;

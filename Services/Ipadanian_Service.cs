@@ -32,6 +32,10 @@ namespace Padanian_Bank.Services.BankService{
 
 		List<Account> Search(Guid account_id);
 
+		void LogTransaction(Guid account_id, float funds, DateTime timestamp, TransactionType type);
+
+		List<Transaction> GetAccountTransactions(Guid account_id);
+
 	}
 
 }

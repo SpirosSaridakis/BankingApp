@@ -207,7 +207,6 @@ namespace Padanian_Bank.Controllers
 
         // POST: Accounts/Delete/5
         [Authorize(Roles = "Employee")]
-        [Authorize(Roles = "Employee")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 
@@ -219,6 +218,14 @@ namespace Padanian_Bank.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return NotFound();
+        }
+        //GET:Accounts/AccountHistory
+        [Authorize]
+        [HttpGet]
+        public IActionResult AccountHistory(Guid account_id)
+        {
+            List<Transaction> transactions = _IpadanianService.GetAccountTransactions(account_id);
+            return View(transactions);
         }
 
         
