@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Padanian_Bank.Models.Transaction>
+
+@{
+    ViewData["Title"] = "My Transactions";
+}
+
+<h1>Transactions</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Funds
+                </th>
+                <th>
+                    Account ID
+                </th>
+                <th>
+                    Time
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Funds)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Account_id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Timestamp)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
