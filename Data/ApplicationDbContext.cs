@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Padanian_Bank.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Padanian_Bank.Data
 {
@@ -16,13 +17,6 @@ namespace Padanian_Bank.Data
         public DbSet<Padanian_Bank.Models.Account> Account { get; set; }
         public DbSet<Padanian_Bank.Models.Transaction> Transaction { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            // Configure the primary key for the MyTable table
-            modelBuilder.Entity<Transaction>()
-                .HasKey(t => t.Account_id);
-
-        }
 
     }
 }
