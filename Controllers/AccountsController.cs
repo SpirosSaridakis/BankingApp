@@ -219,6 +219,29 @@ namespace Padanian_Bank.Controllers
             }
             return NotFound();
         }
+
+
+        // GET: Accounts/AccountHistory
+        [Authorize(Roles = "Customer")]
+        public IActionResult AccountHistory()
+        {
+            return View();
+        }
+
+        // POST: Accounts/AccountHistoryResults
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult AccountHistoryResults(Guid account_id)
+        {
+            List<Transaction> transactions = _IpadanianService.GetAccountTransactions(account_id);
+            if (transactions.Count == 0)
+            {
+                return NotFound();
+            }
+            return View("Index", transactions);
+        }
+
+        /*
         //GET:Accounts/AccountHistory
         [Authorize]
         [HttpGet]
@@ -232,7 +255,7 @@ namespace Padanian_Bank.Controllers
             return View(transactions);
         }
 
-        
+        */
         public IActionResult NullCheck(Account acc)
         {
             if (acc == null)
