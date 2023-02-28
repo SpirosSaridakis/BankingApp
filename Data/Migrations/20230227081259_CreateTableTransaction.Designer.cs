@@ -251,7 +251,7 @@ namespace Padanian_Bank.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("Funds")
-                        .HasColumnType("real");
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
@@ -259,7 +259,11 @@ namespace Padanian_Bank.Data.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.HasKey("Account_id");
+                    b.Property<Guid>("TransactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.HasKey("TransactionId");
 
                     b.ToTable("Transaction");
                 });
