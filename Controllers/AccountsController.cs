@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,7 @@ namespace Padanian_Bank.Controllers
         }
 
         // POST: Accounts/ShowSearchResults
+        [Authorize(Roles = "Employee")]
         [Authorize(Roles = "Employee")]
         [HttpPost]
         public IActionResult ShowSearchResults(Guid SearchPhrase)
@@ -217,7 +219,20 @@ namespace Padanian_Bank.Controllers
             }
             return NotFound();
         }
+        //GET:Accounts/AccountHistory
+        [Authorize]
+        [HttpGet]
+        public IActionResult AccountHistory(Guid account_id)
+        {
+            List<Transaction> transactions = _IpadanianService.GetAccountTransactions(account_id);
+            if(transactions.Count == 0)
+            {
+                return NotFound();
+            }
+            return View(transactions);
+        }
 
+        
         public IActionResult NullCheck(Account acc)
         {
             if (acc == null)

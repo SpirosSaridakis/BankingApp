@@ -184,7 +184,12 @@ public class Padanian_Service : Ipadanian_Service
 
     public List<Transaction> GetAccountTransactions(Guid account_id)
     {
-        List<Transaction> transactions = _context.Transaction.Where(j => j.Account_id == account_id).ToList();
+        List<Transaction> transactions = new List<Transaction>();
+        transactions = _context.Transaction.Where(j => j.Account_id == account_id).ToList();
+        if (transactions == null)
+        {
+            return null;
+        }
         return transactions;
     }
 
