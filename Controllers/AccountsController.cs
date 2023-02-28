@@ -232,6 +232,12 @@ namespace Padanian_Bank.Controllers
             return View(transactions);
         }
 
+        public IActionResult BankStatistics()
+        {
+            StatData data = _IpadanianService.GetBankStatistics();
+            return View(data);
+        }
+
         
         public IActionResult NullCheck(Account acc)
         {
