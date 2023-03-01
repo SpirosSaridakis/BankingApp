@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Padanian_Bank.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Account History";
+}
+
+<h1>Account History</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funds)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account_id)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Funds)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account_id)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div>
+    <a asp-action="Index">Back to MyAccounts</a>
+</div>

@@ -238,7 +238,7 @@ namespace Padanian_Bank.Controllers
             {
                 return NotFound();
             }
-            return View("Index", transactions);
+            return View(transactions);
         }
 
         /*

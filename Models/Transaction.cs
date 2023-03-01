@@ -12,7 +12,7 @@ namespace Padanian_Bank.Models
     {
         public TransactionType Type {get; set;}
 
-        public float Funds { get; set;}
+        public double Funds { get; set;}
 
         public DateTime Timestamp { get; set;}
 
@@ -25,7 +25,7 @@ namespace Padanian_Bank.Models
 
         }
 
-        public Transaction(TransactionType Atype, float Afunds, DateTime Atimestamp, Guid Aaccount_id)
+        public Transaction(TransactionType Atype, double Afunds, DateTime Atimestamp, Guid Aaccount_id)
         {
             Type=Atype;
             Funds=Afunds;

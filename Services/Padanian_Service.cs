@@ -184,8 +184,7 @@ public class Padanian_Service : Ipadanian_Service
 
     public List<Transaction> GetAccountTransactions(Guid account_id)
     {
-        List<Transaction> transactions = new List<Transaction>();
-        transactions = _context.Transaction.Where(j => j.Account_id == account_id).ToList();
+        List<Transaction> transactions = _context.Transaction.Where(j=>j.Account_id==account_id).ToList();
         if (transactions == null)
         {
             return null;
@@ -193,7 +192,7 @@ public class Padanian_Service : Ipadanian_Service
         return transactions;
     }
 
-    public void LogTransaction(Guid account_id, float funds, DateTime timestamp, TransactionType type)
+    public void LogTransaction(Guid account_id, double funds, DateTime timestamp, TransactionType type)
     {
         Transaction t = new Transaction(type,funds,timestamp,account_id);
         _context.Transaction.Add(t);
