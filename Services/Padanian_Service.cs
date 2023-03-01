@@ -199,5 +199,49 @@ public class Padanian_Service : Ipadanian_Service
         _context.SaveChanges();
     }
 
-    
+    public StatData GetBankStatistics()
+    {
+        StatData data = new StatData();
+        data.TotalMoney = _context.Account.Sum(x => x.Balance);
+        data.AccountCount = _context.Account.Count();
+        data.AccountsPerCategory = new Dictionary<Desc, int>
+        {
+            { Desc.Salary, DescCount(Desc.Salary) },
+            { Desc.Business, DescCount(Desc.Business) },
+            { Desc.Investor, DescCount(Desc.Investor) },
+            { Desc.Savings, DescCount(Desc.Savings) }
+        };
+        data.TransactionsToday = TransactionsToday(_context.Transaction.ToList());
+        return data;
+
+    }
+
+    public int DescCount(Desc desc)
+    {
+        return (_context.Account.Where(j => j.Desc == desc).Count());
+    }
+
+    public int TransactionsToday(List<Transaction> list)
+    {
+        DateTime time = DateTime.Now;
+        int count = 0;
+        foreach(Transaction transaction in list)
+        {
+            if (transaction.Timestamp.Day != time.Day)
+            {
+                continue;
+            }
+            else if (transaction.Timestamp.Month != time.Month)
+            {
+                continue;
+            }
+            else if (transaction.Timestamp.Year != time.Year)
+            {
+                continue;
+            }
+            count++;       
+        }        
+        return count;
+    }
+
 }

@@ -36,6 +36,8 @@ namespace Padanian_Bank.Services.BankService{
 
 		List<Transaction> GetAccountTransactions(Guid account_id);
 
+		StatData GetBankStatistics();
+
 	}
 
 }

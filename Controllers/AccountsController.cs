@@ -241,7 +241,7 @@ namespace Padanian_Bank.Controllers
             return View(transactions);
         }
 
-        /*
+        
         //GET:Accounts/AccountHistory
         [Authorize]
         [HttpGet]
@@ -255,7 +255,15 @@ namespace Padanian_Bank.Controllers
             return View(transactions);
         }
 
-        */
+        //GET:Accounts/BankStatistics
+        [Authorize]
+        [HttpGet]
+        public IActionResult BankStatistics()
+        {
+            StatData data = _IpadanianService.GetBankStatistics();
+            return View(data);
+        }
+
         public IActionResult NullCheck(Account acc)
         {
             if (acc == null)

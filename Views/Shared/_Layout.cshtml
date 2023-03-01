@@ -33,6 +33,11 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="AccountHistory">My Transactions</a>
                             </li>
+                            
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="BankStatistics">Bank Statistics</a>
+                            </li>
+
                         }
                         @if (User.IsInRole("Employee"))
                         {
