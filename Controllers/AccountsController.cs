@@ -223,6 +223,7 @@ namespace Padanian_Bank.Controllers
 
         // GET: Accounts/AccountHistory
         [Authorize(Roles = "Customer")]
+        [HttpGet]
         public IActionResult AccountHistory()
         {
             return View();
@@ -241,19 +242,6 @@ namespace Padanian_Bank.Controllers
             return View(transactions);
         }
 
-        
-        //GET:Accounts/AccountHistory
-        [Authorize]
-        [HttpGet]
-        public IActionResult AccountHistory(Guid account_id)
-        {
-            List<Transaction> transactions = _IpadanianService.GetAccountTransactions(account_id);
-            if(transactions.Count == 0)
-            {
-                return NotFound();
-            }
-            return View(transactions);
-        }
 
         //GET:Accounts/BankStatistics
         [Authorize]
