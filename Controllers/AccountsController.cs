@@ -232,6 +232,9 @@ namespace Padanian_Bank.Controllers
             return View(transactions);
         }
 
+        //GET:Accounts/BankStatistics
+        [Authorize]
+        [HttpGet]
         public IActionResult BankStatistics()
         {
             StatData data = _IpadanianService.GetBankStatistics();
