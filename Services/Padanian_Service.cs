@@ -44,14 +44,9 @@ public class Padanian_Service : Ipadanian_Service
         }
         data.Balance += ammount;
         _context.SaveChanges();
+        DateTime time = DateTime.Now;
+        LogTransaction(account_id, ammount, time, TransactionType.Deposit);
         return data; 
-        /*
-        if(checkIfExists(account_id)==null){
-            return false;
-        }
-        Account acc = _accounts[account_id];
-        acc.Balance+=ammount;
-        return true;*/
     }
 
     public Account Details(Guid account_id)
@@ -82,6 +77,9 @@ public class Padanian_Service : Ipadanian_Service
         }
         data.Balance -= ammount;
         _context.SaveChanges();
+        DateTime time = DateTime.Now;
+        LogTransaction(account_id, ammount, time, TransactionType.Withdrawal);
+
         return data;
 
     }
@@ -137,7 +135,11 @@ public class Padanian_Service : Ipadanian_Service
             return null;
         }
         with = Withdraw(sendId,funds);
+        DateTime time = DateTime.Now;
+        LogTransaction(sendId, funds, time, TransactionType.TransferFrom);
         dep = Deposit(recvId, funds);
+        time = DateTime.Now;
+        LogTransaction(recvId, funds, time, TransactionType.TransferTo);
         return with;
     }
 
@@ -178,6 +180,23 @@ public class Padanian_Service : Ipadanian_Service
         }
         return _context.Account.Find(account_id);
         
+    }
+
+    public List<Transaction> GetAccountTransactions(Guid account_id)
+    {
+        List<Transaction> transactions = _context.Transaction.Where(j=>j.Account_id==account_id).ToList();
+        if (transactions == null)
+        {
+            return null;
+        }
+        return transactions;
+    }
+
+    public void LogTransaction(Guid account_id, double funds, DateTime timestamp, TransactionType type)
+    {
+        Transaction t = new Transaction(type,funds,timestamp,account_id);
+        _context.Transaction.Add(t);
+        _context.SaveChanges();
     }
 
     
