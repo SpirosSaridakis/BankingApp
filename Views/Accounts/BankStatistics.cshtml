@@ -1,0 +1,41 @@
+﻿@model Padanian_Bank.Models.StatData
+
+@{
+    ViewData["Title"] = "BankStatistics";
+}
+
+<h1>BankStatistics</h1>
+
+<div>
+    <h4>StatData</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AccountCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AccountCount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AccountsPerCategory)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AccountsPerCategory)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalMoney)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalMoney)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TransactionsToday)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TransactionsToday)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

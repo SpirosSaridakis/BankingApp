@@ -10,14 +10,14 @@ using Padanian_Bank.Data;
 namespace Padanian_Bank.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221205172947_initialsetup")]
-    partial class Initialsetup
+    [Migration("20230227081259_CreateTableTransaction")]
+    partial class CreateTableTransaction
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.30")
+                .HasAnnotation("ProductVersion", "3.1.32")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -223,23 +223,45 @@ namespace Padanian_Bank.Data.Migrations
 
             modelBuilder.Entity("Padanian_Bank.Models.Account", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("AccountId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("balance")
+                    b.Property<double>("Balance")
                         .HasColumnType("float");
 
-                    b.Property<string>("currency")
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Desc")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("desc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
+                    b.HasKey("AccountId");
 
                     b.ToTable("Account");
+                });
+
+            modelBuilder.Entity("Padanian_Bank.Models.Transaction", b =>
+                {
+                    b.Property<Guid>("Account_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("Funds")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Account_id");
+
+                    b.ToTable("Transaction");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

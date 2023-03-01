@@ -1,27 +1,31 @@
 ﻿@model Padanian_Bank.Models.Account
 
 @{
-    ViewData["Title"] = "Deposit New Funds";
+    ViewData["Title"] = "Tranfer Funds To Another Bank Account";
 }
 
-<h1>Deposit</h1>
+<h1>Transfer Funds</h1>
 
 <h4>Account</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Deposit">
+        <form asp-action="Transfer">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="AccountId" />
             <input type="hidden" asp-for="Desc" />
             <input type="hidden" asp-for="Balance" />
             <input type="hidden" asp-for="Currency" />
             <div class="form-group">
+                <label for="AccId" class="control-label">Account ID</label>
+                <input name="AccId" class="form-control" />
+            </div>
+            <div class="form-group">
                 <label for="Funds" class="control-label">Funds</label>
                 <input name="Funds" class="form-control" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Deposit" class="btn btn-primary" />
+                <input type="submit" value="Transfer" class="btn btn-primary" />
             </div>
         </form>
     </div>

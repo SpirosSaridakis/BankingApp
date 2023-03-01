@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Padanian_Bank.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Padanian_Bank.Data
 {
@@ -14,5 +15,9 @@ namespace Padanian_Bank.Data
         {
         }
         public DbSet<Padanian_Bank.Models.Account> Account { get; set; }
+        public DbSet<Padanian_Bank.Models.Transaction> Transaction { get; set; }
+
+
     }
 }
+
