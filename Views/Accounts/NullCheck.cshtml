@@ -7,6 +7,9 @@
     The transaction you tried to make has failed because an error occured, please try again.
 </p>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@if (User.IsInRole("Customer"))
+{
+    <div>
+        <a asp-action="Index">Back to MyAccounts</a>
+    </div>
+}

@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label asp-for="Desc" class="control-label"></label>
                 <span asp-validation-for="Desc" class="text-danger"></span>
-                <select name="Desc" id="Desc">
+                <select name="Type" id="Desc">
                     <option value="Salary">Salary</option>
                     <option value="Investor">Investor</option>
                     <option value="Savings">Savings</option>
@@ -30,9 +30,12 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@if (User.IsInRole("Customer"))
+{
+    <div>
+        <a asp-action="Index">Back to MyAccounts</a>
+    </div>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -34,6 +34,11 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="AccountId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        @if (User.IsInRole("Customer"))
+        {
+            <div>
+                <a asp-action="Index">Back to MyAccounts</a>
+            </div>
+        }
     </form>
 </div>

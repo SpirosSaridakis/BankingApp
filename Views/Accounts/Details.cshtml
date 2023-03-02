@@ -11,25 +11,25 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AccountId)
+            Account Id
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.AccountId)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Desc)
+            Type
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Desc)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Balance)
+            Balance
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Balance)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Currency)
+            Currency
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Currency)
@@ -37,6 +37,5 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.AccountId">Change Account Type</a> |
     <a asp-action="Index">Back to List</a>
 </div>
