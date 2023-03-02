@@ -2,6 +2,7 @@
 
 This application was created for academic purposes. We used c# and the .NET Framework(CORE 3.1) to create the back-end of our website and to design the front end of our application we used the Views provided by the framework as well. This website can be used by either customers or employees of the bank, we did that by adding two roles. The application communicates with an sql server(we used a built in one in visual studio).
 Note: There is a text file in this repository containing a script used to create all the database tables.
+Note 2: Our main branch is the one that is up to date with all the final changes.
 
 # App Functionalities
 
