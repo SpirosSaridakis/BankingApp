@@ -30,3 +30,7 @@ Note: There is a text file in this repository containing a script used to create
 ### Testing
 * We tested the application with conventional user testing during the development of the application.
 * We did discover some problems during our testing and most of the bugs were eliminated.
+
+### Development tools
+* We used Visual Studio(2022, 2020) and Visual Studio Code, SQL Server and as mentioned before the .NET CORE 3.1 Framework.
+* To handle the communication with the database we used the Entity Framework. 
