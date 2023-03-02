@@ -222,7 +222,7 @@ namespace Padanian_Bank.Controllers
 
 
         // GET: Accounts/AccountHistory
-        [Authorize(Roles = "Customer")]
+        [Authorize]
         [HttpGet]
         public IActionResult AccountHistory()
         {
@@ -230,7 +230,7 @@ namespace Padanian_Bank.Controllers
         }
 
         // POST: Accounts/AccountHistoryResults
-        [Authorize(Roles = "Customer")]
+        [Authorize]
         [HttpPost]
         public IActionResult AccountHistoryResults(Guid account_id)
         {

@@ -22,21 +22,25 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Funds)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Account_id)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Funds)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Account_id)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
-<div>
-    <a asp-action="Index">Back to MyAccounts</a>
-</div>
+@if (User.IsInRole("Customer"))
+{
+    <div>
+        <a asp-action="Index">Back to MyAccounts</a>
+    </div>
+}
