@@ -62,8 +62,7 @@
                 @if (User.IsInRole("Employee"))
                 {
                     <a asp-action="Edit" asp-route-id="@item.AccountId">| Edit Description |</a>
-                    <a asp-action="Delete" asp-route-id="@item.AccountId">Delete |</a>
-                    <a asp-action="AccountHistory" asp-route-id="@item.AccountId">History</a>
+                    <a asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
                 }
             </td>
             </tr>
